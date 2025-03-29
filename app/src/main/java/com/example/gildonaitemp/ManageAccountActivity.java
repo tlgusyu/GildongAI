@@ -23,7 +23,10 @@ public class ManageAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_account);
 
         setUserInfo();
+        setMenuBtns();
+    }
 
+    private void setMenuBtns() {
         LinearLayout linearMenu = (LinearLayout) findViewById(R.id.menu);
         linearMenu.setOrientation(LinearLayout.VERTICAL);
 
@@ -31,7 +34,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         for (String text : buttonTexts) {
             linearMenu.addView(addMenuButton(text));
         }
-
     }
 
     private void setUserInfo() {
