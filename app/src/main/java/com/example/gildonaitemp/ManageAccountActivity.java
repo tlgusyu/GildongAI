@@ -22,6 +22,8 @@ public class ManageAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_account);
 
+        setUserInfo();
+
         LinearLayout linearMenu = (LinearLayout) findViewById(R.id.menu);
         linearMenu.setOrientation(LinearLayout.VERTICAL);
 
@@ -30,6 +32,17 @@ public class ManageAccountActivity extends AppCompatActivity {
             linearMenu.addView(addMenuButton(text));
         }
 
+    }
+
+    private void setUserInfo() {
+        //임시
+        String username = "홍길동";
+        String carNumber = "12가 3456";
+
+        TextView usernameTextView = (TextView) findViewById(R.id.username);
+        TextView carNumberTextView = (TextView) findViewById(R.id.carNumber);
+        usernameTextView.setText(username);
+        carNumberTextView.setText(carNumber);
     }
 
     private Button addMenuButton(String s) {
