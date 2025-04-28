@@ -53,7 +53,7 @@ public class GuideActivity extends AppCompatActivity {
         tipList.add("올바른 유턴 방법");
         tipList.add("원형 교차로(회전교차로)에서의 통행 방법");
 
-        filteredList.addAll(tipList); // 초기엔 전체 보여줌
+        filteredList.addAll(tipList);
 
         adapter = new TipAdapter(filteredList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
