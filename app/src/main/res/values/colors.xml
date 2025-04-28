@@ -6,4 +6,5 @@
     <color name="blue">#072BF3</color>
     <color name="mainTheme">#072BF2</color>
     <color name="mainThemeOp10">#1A072BF2</color>
+    <color name="mainThemeOp80">#CC072BF2</color>
 </resources>

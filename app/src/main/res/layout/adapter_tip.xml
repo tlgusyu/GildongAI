@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <android.widget.Button
+        android:id="@+id/tipButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sample" />
+
+    <!-- 임시 -->
+    <LinearLayout
+        android:id="@+id/tipDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:animateLayoutChanges="true">
+
+        <ImageView
+            android:id="@+id/tipImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/tipText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sample Text" />
+    </LinearLayout>
+
+</LinearLayout>

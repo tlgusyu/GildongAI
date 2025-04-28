@@ -1,24 +1,90 @@
 package com.example.gildonaitemp;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuideActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private SearchView searchView;
+    private TipAdapter adapter;
+    private List<String> tipList;
+    private List<String> filteredList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_guide);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        recyclerView = findViewById(R.id.driveTips);
+        searchView = findViewById(R.id.searchView);
+        //searchView.setIconifiedByDefault(false); // 처음부터 펼쳐진 상태
+        //searchView.setSubmitButtonEnabled(false); // 서브밋 버튼 비활성화 (옵션)
+        searchView.setQueryHint("검색어를 입력하세요");
+
+//        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+//                }
+//            }
+//        });
+
+
+        tipList = new ArrayList<>();
+        filteredList = new ArrayList<>();
+
+        tipList.add("접촉 사고 발생 시 대처 요령");
+        tipList.add("주행 중 시동이 꺼졌을 때 대처 요령");
+        tipList.add("급발진 대처 요령");
+        tipList.add("교차로 우회전 방법");
+        tipList.add("비보호 좌회전 방법");
+        tipList.add("올바른 유턴 방법");
+        tipList.add("원형 교차로(회전교차로)에서의 통행 방법");
+
+        filteredList.addAll(tipList); // 초기엔 전체 보여줌
+
+        adapter = new TipAdapter(filteredList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        // 서치뷰 필터링 기능
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterList(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
         });
     }
+
+    private void filterList(String text) {
+        filteredList.clear();
+        for (String item : tipList) {
+            if (item.toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        //adapter.notifyDataSetChanged();
+        adapter.updateList(filteredList);
+    }
+
+
 }
