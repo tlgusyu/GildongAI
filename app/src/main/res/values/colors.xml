@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="basic_gray">#828282</color>
     <color name="blue">#072BF3</color>
+    <color name="mainTheme">#072BF2</color>
+    <color name="mainThemeOp10">#1A072BF2</color>
 </resources>
