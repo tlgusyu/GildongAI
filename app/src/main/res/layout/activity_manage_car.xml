@@ -45,7 +45,6 @@
                 android:id="@+id/carNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1234"
                 android:textSize="28dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,9 +54,9 @@
                 android:id="@+id/carType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="소나타"
-                android:textSize="24dp"
+                android:layout_marginLeft="4dp"
+                android:paddingBottom="8dp"
+                android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="@+id/carNumber"
                 app:layout_constraintTop_toBottomOf="@+id/carNumber" />
 
