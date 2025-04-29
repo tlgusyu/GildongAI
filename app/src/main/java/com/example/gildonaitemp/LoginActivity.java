@@ -3,12 +3,8 @@ package com.example.gildonaitemp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-<<<<<<< HEAD
-=======
 import android.widget.EditText;
 import android.widget.Toast;
->>>>>>> origin/develop
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -19,12 +15,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
     private TextInputEditText idText;
     private TextInputEditText passwordText;
-=======
     private EditText etUsername, etPassword;
->>>>>>> origin/develop
     private Button loginButton;
 
     @Override
@@ -32,14 +25,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-<<<<<<< HEAD
         idText = findViewById(R.id.etEmail);
         passwordEditText = findViewById(R.id.etPassword);
         loginButton = findViewById(R.id.btnLogin);
 
     }
 
-=======
         etUsername = findViewById(R.id.ID);
         etPassword = findViewById(R.id.PW);
         loginButton = findViewById(R.id.login_button);
@@ -67,6 +58,5 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String username, String password) {
     }
->>>>>>> origin/develop
 
 }

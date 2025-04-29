@@ -3,6 +3,7 @@ package com.example.gildonaitemp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -60,5 +61,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, GuideActivity.class);
             startActivity(intent);
         });
+
+        ImageView alarmButton = findViewById(R.id.AlarmButton);
+        alarmButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NotificationActivity.class);
+            startActivity(intent);
+        });
     }
+
 }
