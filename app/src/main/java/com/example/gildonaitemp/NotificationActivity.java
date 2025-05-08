@@ -1,6 +1,8 @@
 package com.example.gildonaitemp;
 
 import android.os.Bundle;
+import android.util.TypedValue;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,5 +44,12 @@ public class NotificationActivity extends AppCompatActivity {
         oldNotificationAdapter = new NotificationAdapter(oldNotifications);
         recyclerViewOld.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewOld.setAdapter(oldNotificationAdapter);
+
+        // 16dp 간격 적용 (ItemDecoration)
+        int spacingInPixels = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
+
+        recyclerViewNew.addItemDecoration(new VerticalSpaceItemDecoration(spacingInPixels));
+        recyclerViewOld.addItemDecoration(new VerticalSpaceItemDecoration(spacingInPixels));
     }
 }
