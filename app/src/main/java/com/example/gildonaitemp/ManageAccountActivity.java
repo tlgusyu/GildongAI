@@ -1,5 +1,6 @@
 package com.example.gildonaitemp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -34,6 +35,15 @@ public class ManageAccountActivity extends AppCompatActivity {
         for (String text : buttonTexts) {
             linearMenu.addView(addMenuButton(text));
         }
+
+        Button myDriving = (Button) linearMenu.getChildAt(0);
+
+
+        Button editAccount = (Button) linearMenu.getChildAt(1);
+        editAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EditAccountActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setUserInfo() {

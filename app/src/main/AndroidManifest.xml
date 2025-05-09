@@ -13,26 +13,32 @@
         android:theme="@style/Theme.GildonAITemp"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditCarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".ManageAccountActivity"
             android:exported="false" />
         <activity
             android:name=".ManageCarActivity"
             android:exported="false" />
-
         <activity
             android:name=".CameraActivity"
             android:exported="false" />
-
         <activity
             android:name=".GuideActivity"
             android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
