@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,19 +14,31 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private LinearLayout signupKakao;
+    private EditText etUsername, etPassword;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        signupKakao = findViewById(R.id.signup_kakao);
+        etUsername = findViewById(R.id.ID);
+        etPassword = findViewById(R.id.PW);
+        loginButton = findViewById(R.id.login_button);
 
-        signupKakao.setOnClickListener(v -> {
-            //서버통신
+        loginButton.setOnClickListener(v -> {
+//            String username = etUsername.getText().toString();
+//            String password = etPassword.getText().toString();
+//
+//            if (username.isEmpty() || password.isEmpty()) {
+//                Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+//            } else {
+//                // 서버로 로그인 요청
+//                loginUser(username, password);
+//            }
 
-
+            //임시
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
 
@@ -38,5 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void loginUser(String username, String password) {
+    }
 
 }
