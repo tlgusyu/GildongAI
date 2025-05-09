@@ -4,28 +4,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class LoginActivity extends AppCompatActivity {
 
+    private TextInputEditText idText;
+    private TextInputEditText passwordText;
     private EditText etUsername, etPassword;
-    private Button loginButton;
+    private Button loginButton, registerButton;
+    private LinearLayout kakaoLogin, naverLogin, googleLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        setButton();
+    }
+
+    private void setButton() {
         etUsername = findViewById(R.id.ID);
         etPassword = findViewById(R.id.PW);
+        registerButton = findViewById(R.id.sign_up);
         loginButton = findViewById(R.id.login_button);
+        kakaoLogin = findViewById(R.id.signup_kakao);
+        naverLogin = findViewById(R.id.signup_naver);
+        googleLogin = findViewById(R.id.signup_google);
+
+        registerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            startActivity(intent);
+
+        });
 
         loginButton.setOnClickListener(v -> {
 //            String username = etUsername.getText().toString();
@@ -46,9 +64,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    }
 
-    private void loginUser(String username, String password) {
+
+
     }
 
 }

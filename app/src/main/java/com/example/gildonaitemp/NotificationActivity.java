@@ -45,11 +45,13 @@ public class NotificationActivity extends AppCompatActivity {
         recyclerViewOld.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewOld.setAdapter(oldNotificationAdapter);
 
+
         // 16dp 간격 적용 (ItemDecoration)
         int spacingInPixels = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
 
         recyclerViewNew.addItemDecoration(new VerticalSpaceItemDecoration(spacingInPixels));
         recyclerViewOld.addItemDecoration(new VerticalSpaceItemDecoration(spacingInPixels));
+
     }
 }
