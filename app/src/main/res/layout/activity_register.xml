@@ -48,6 +48,34 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="이름"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" 입력"
+                    android:textSize="20sp" />
+            </LinearLayout>
+            <EditText
+                android:id="@+id/userID"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                android:inputType="text"
+                android:padding="10dp" />
+
+            <LinearLayout
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="아이디"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -63,11 +91,11 @@
                 android:id="@+id/userID"
                 android:layout_width="310dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/white"
                 android:inputType="text"
-                android:padding="12dp"
+                android:padding="10dp"
                 />
 
             <LinearLayout
@@ -93,11 +121,11 @@
                 android:id="@+id/userPW"
                 android:layout_width="310dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/white"
-                android:inputType="text"
-                android:padding="12dp" />
+                android:inputType="textPassword"
+                android:padding="10dp" />
 
             <LinearLayout
                 android:layout_width="310dp"
@@ -121,11 +149,13 @@
                 android:id="@+id/userPWchech"
                 android:layout_width="310dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/white"
-                android:inputType="text"
-                android:padding="12dp" />
+                android:inputType="textPassword"
+                android:padding="10dp" />
+
+
 
         </LinearLayout>
 

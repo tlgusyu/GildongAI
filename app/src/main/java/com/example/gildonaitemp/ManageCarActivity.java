@@ -40,9 +40,9 @@ public class ManageCarActivity extends AppCompatActivity {
         LinearLayout linearMenu = (LinearLayout) findViewById(R.id.menu);
         linearMenu.setOrientation(LinearLayout.VERTICAL);
 
-        String[] buttonTexts = {carType + " 차량 메뉴얼 보기",
+        String[] buttonTexts = {
+                carType + "차량 메뉴얼 보기",
                 "타이어 관리", "엔진 오일 관리", "기타 소모품 관리",
-                "다음 정비 예정일은 " + scheduled + " 입니다.",
                 "정비 내역 조회", "사고 기록 조회"};
         for (String text : buttonTexts) {
             linearMenu.addView(addMenuButton(text));
@@ -54,14 +54,6 @@ public class ManageCarActivity extends AppCompatActivity {
         carTypeBoldText.append(carTypeBold);
         carTypeBoldText.append(" 차량 메뉴얼 보기");
         menuList.get(0).setText(carTypeBoldText);
-
-        SpannableStringBuilder scheduledBoldText = new SpannableStringBuilder();
-        scheduledBoldText.append("다음 정비 예정일은 ");
-        SpannableString scheduledBold = new SpannableString(scheduled);
-        scheduledBold.setSpan(new StyleSpan(Typeface.BOLD), 0, scheduled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        scheduledBoldText.append(scheduledBold);
-        scheduledBoldText.append(" 입니다");
-        menuList.get(4).setText(scheduledBoldText);
     }
 
     private Button addMenuButton(String s) {

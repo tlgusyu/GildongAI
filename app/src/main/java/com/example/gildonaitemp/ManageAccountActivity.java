@@ -31,7 +31,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         LinearLayout linearMenu = (LinearLayout) findViewById(R.id.menu);
         linearMenu.setOrientation(LinearLayout.VERTICAL);
 
-        String[] buttonTexts = {"나의 운전 습관", "회원 정보 수정"};
+        String[] buttonTexts = {"나의 운전 점수 기록", "회원 정보 수정"};
         for (String text : buttonTexts) {
             linearMenu.addView(addMenuButton(text));
         }
