@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.adapter;
 
 public class NotificationItem {
     private String type;        // 알림 종류 (차량 점검, 안전, 차량 소모품, 지난 알림)

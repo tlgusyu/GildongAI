@@ -1,14 +1,12 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.gildonaitemp.R;
 
 public class CameraActivity extends AppCompatActivity {
 

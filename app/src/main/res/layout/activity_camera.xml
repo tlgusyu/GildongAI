@@ -9,7 +9,7 @@
     android:layout_marginTop="24dp"
     android:layout_marginEnd="24dp"
     android:layout_marginBottom="24dp"
-    tools:context=".CameraActivity">
+    tools:context=".activity.CameraActivity">
 
     <TextView
         android:id="@+id/submenu3"

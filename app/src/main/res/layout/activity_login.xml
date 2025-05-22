@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".LoginActivity">
+    tools:context=".activity.LoginActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -31,6 +31,7 @@
             android:layout_height="24dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/LayoutID"
             android:layout_width="409dp"
             android:layout_height="wrap_content"
             app:boxCornerRadiusBottomEnd="8dp"
@@ -54,6 +55,7 @@
             android:layout_height="16dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/LayoutPW"
             android:layout_width="409dp"
             android:layout_height="wrap_content"
             app:boxCornerRadiusBottomEnd="8dp"
@@ -69,6 +71,7 @@
                 android:layout_gravity="center"
                 android:hint="비밀번호"
                 android:textColor="@color/basic_gray"
+                android:inputType="textPassword"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 

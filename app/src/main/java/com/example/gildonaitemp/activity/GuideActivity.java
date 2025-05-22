@@ -1,13 +1,13 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gildonaitemp.R;
+import com.example.gildonaitemp.adapter.TipAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +27,8 @@ public class GuideActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.driveTips);
         searchView = findViewById(R.id.searchView);
-        //searchView.setIconifiedByDefault(false); // 처음부터 펼쳐진 상태
-        //searchView.setSubmitButtonEnabled(false); // 서브밋 버튼 비활성화 (옵션)
+
         searchView.setQueryHint("검색어를 입력하세요");
-
-//        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
-//                }
-//            }
-//        });
-
 
         tipList = new ArrayList<>();
         filteredList = new ArrayList<>();
@@ -82,9 +70,6 @@ public class GuideActivity extends AppCompatActivity {
                 filteredList.add(item);
             }
         }
-        //adapter.notifyDataSetChanged();
         adapter.updateList(filteredList);
     }
-
-
 }

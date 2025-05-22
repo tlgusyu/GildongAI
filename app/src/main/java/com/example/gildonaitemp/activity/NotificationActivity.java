@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.activity;
 
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -6,6 +6,12 @@ import android.util.TypedValue;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gildonaitemp.adapter.NotificationAdapter;
+import com.example.gildonaitemp.adapter.NotificationItem;
+import com.example.gildonaitemp.R;
+import com.example.gildonaitemp.adapter.VerticalSpaceItemDecoration;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.adapter;
 
 import android.graphics.Rect;
 import android.view.View;
