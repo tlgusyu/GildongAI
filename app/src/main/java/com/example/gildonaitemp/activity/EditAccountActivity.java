@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,6 +105,7 @@ public class EditAccountActivity extends AppCompatActivity {
     private void getUserInfo() {
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = prefs.getString("userId", null);
+        Log.d("temp", userId);
 
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<ServerUserResponse> callUser = apiService.getUserById(userId);
@@ -141,15 +143,14 @@ public class EditAccountActivity extends AppCompatActivity {
         });
 
         Call<List<ConsumableResponse>> callCar = apiService.getConsumablesByUser(userId);
-
         callCar.enqueue(new ResponseCallback<List<ConsumableResponse>>() {
             @Override
             public void onSuccess(List<ConsumableResponse> consumables) {
                 if (consumables != null && !consumables.isEmpty()) {
                     TextView carNumberTextView = (TextView) findViewById(R.id.carNumber);
-                    carNumberTextView.setText(consumables.get(0).getCarNumber());
+                    carNumberTextView.setText(consumables.get(3).getCarNumber()); //최신으로
                     TextView carModelTextView = (TextView) findViewById(R.id.carModelName);
-                    carModelTextView.setText(consumables.get(0).getCarModel());
+                    carModelTextView.setText(consumables.get(3).getCarModel()); //최신으로
                 } else {
                     Log.w("fetchConsumables", "소모품 내역 조회 실패");
                     Toast.makeText(EditAccountActivity.this, "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
@@ -171,6 +172,13 @@ public class EditAccountActivity extends AppCompatActivity {
                 super.onFailure(call, t);
                 Toast.makeText(EditAccountActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        TableLayout updateUserCar = (TableLayout) findViewById(R.id.userCar);
+        updateUserCar.setOnClickListener(v -> {
+            Intent intent = new Intent(EditAccountActivity.this, UpdateCarActivity.class);
+            startActivity(intent);
+            //finish();
         });
 
     }

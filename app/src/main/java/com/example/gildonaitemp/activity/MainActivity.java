@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Button submenu3 = (Button) findViewById(R.id.btn_check_camera);
         submenu3.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CameraActivity.class);
+            Intent intent = new Intent(this, MyDrivingActivity.class);
             startActivity(intent);
         });
         Button submenu4 = (Button) findViewById(R.id.btn_emergency_guide);

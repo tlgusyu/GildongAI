@@ -2,6 +2,7 @@ package com.example.gildonaitemp.api;
 
 import com.example.gildonaitemp.ConsumableResponse;
 import com.example.gildonaitemp.ConsumableRequest;
+import com.example.gildonaitemp.DrivingPatternResponse;
 import com.example.gildonaitemp.ServerUserLoginRequest;
 import com.example.gildonaitemp.ServerUserResponse;
 import com.example.gildonaitemp.ServerUserRequest;
@@ -29,6 +30,9 @@ public interface ApiService {
 
     @PUT("/api/users/{userId}")
     Call<ServerUserResponse> updateUser(@Path("userId") String userId, @Body ServerUserUpdateRequest request);
+
+    @GET("/api/patterns/user/{userId}")
+    Call<List<DrivingPatternResponse>> getDrivingPatterns(@Path("userId") String userId);
 
     @POST("/api/consumables")
     Call<ConsumableResponse> createConsumable(@Body ConsumableRequest request);

@@ -165,7 +165,7 @@
                 android:outlineProvider="none"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:text="카메라 확인"
+                android:text="나의 운전 기록"
                 android:textColor="@color/btn_text_selector"
                 app:backgroundTint="@color/btn_bg_selector"
                 app:cornerRadius="20dp"

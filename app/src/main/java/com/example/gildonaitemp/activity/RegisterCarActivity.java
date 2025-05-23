@@ -28,7 +28,6 @@ public class RegisterCarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_register);
         enterCarInfo();
-        //차량 수정 페이지..
     }
 
     private void enterCarInfo() {
@@ -36,7 +35,7 @@ public class RegisterCarActivity extends AppCompatActivity {
         EditText etCarNum = (EditText) findViewById(R.id.etCarNum);
 
         //차량모델 리스트 임시
-        String[] carModelList = {"소나타", "아반떼"};
+        String[] carModelList = {"소나타", "아반떼", "그랜저"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
@@ -85,8 +84,5 @@ public class RegisterCarActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 }

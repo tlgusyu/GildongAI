@@ -1,6 +1,8 @@
 package com.example.gildonaitemp;
 
-public class ConsumableResponse {
+import java.io.Serializable;
+
+public class ConsumableResponse implements Serializable {
     private String id;
     private String userId;
     private String carModel;
