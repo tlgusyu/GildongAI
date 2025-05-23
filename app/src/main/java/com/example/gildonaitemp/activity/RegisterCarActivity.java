@@ -84,32 +84,6 @@ public class RegisterCarActivity extends AppCompatActivity {
             }
         });
 
-/*
-        ConsumableRequest request = new ConsumableRequest(userId, carModel, carNumber);
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<ConsumableResponse> call = apiService.createConsumable(request);
-
-        call.enqueue(new Callback<ConsumableResponse>() {
-            @Override
-            public void onResponse(Call<ConsumableResponse> call, Response<ConsumableResponse> response) {
-                if (response.isSuccessful()) {
-                    Log.d("POST Consumable", "저장 성공");
-                    Toast.makeText(RegisterCarActivity.this, "차량 등록 완료", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Log.e("POST Consumable", "응답 실패: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ConsumableResponse> call, Throwable t) {
-                Log.e("POST Consumable", "서버 연결 실패", t);
-            }
-        });
-
-*/
-
     }
 
 
