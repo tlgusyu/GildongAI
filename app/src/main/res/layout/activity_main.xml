@@ -169,7 +169,7 @@
                 android:textColor="@color/btn_text_selector"
                 app:backgroundTint="@color/btn_bg_selector"
                 app:cornerRadius="20dp"
-                app:icon="@drawable/icon_camera"
+                app:icon="@drawable/icon_drivelog"
                 app:iconGravity="top"
                 app:iconPadding="0dp"
                 app:iconSize="50dp"
