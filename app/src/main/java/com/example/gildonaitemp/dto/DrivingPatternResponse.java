@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.dto;
 
 public class DrivingPatternResponse {
     private String id;

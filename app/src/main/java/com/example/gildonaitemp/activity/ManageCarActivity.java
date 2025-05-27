@@ -1,5 +1,5 @@
 package com.example.gildonaitemp.activity;
-import com.example.gildonaitemp.ConsumableResponse;
+import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;

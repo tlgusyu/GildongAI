@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.gildonaitemp.ConsumableResponse;
+import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
-import com.example.gildonaitemp.ServerUserResponse;
-import com.example.gildonaitemp.ServerUserUpdateRequest;
+import com.example.gildonaitemp.dto.ServerUserResponse;
+import com.example.gildonaitemp.dto.ServerUserUpdateRequest;
 import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;
 import com.example.gildonaitemp.api.ResponseCallback;

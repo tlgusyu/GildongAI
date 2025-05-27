@@ -1,12 +1,12 @@
 package com.example.gildonaitemp.api;
 
-import com.example.gildonaitemp.ConsumableResponse;
-import com.example.gildonaitemp.ConsumableRequest;
-import com.example.gildonaitemp.DrivingPatternResponse;
-import com.example.gildonaitemp.ServerUserLoginRequest;
-import com.example.gildonaitemp.ServerUserResponse;
-import com.example.gildonaitemp.ServerUserRequest;
-import com.example.gildonaitemp.ServerUserUpdateRequest;
+import com.example.gildonaitemp.dto.ConsumableResponse;
+import com.example.gildonaitemp.dto.ConsumableRequest;
+import com.example.gildonaitemp.dto.DrivingPatternResponse;
+import com.example.gildonaitemp.dto.ServerUserLoginRequest;
+import com.example.gildonaitemp.dto.ServerUserResponse;
+import com.example.gildonaitemp.dto.ServerUserRequest;
+import com.example.gildonaitemp.dto.ServerUserUpdateRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

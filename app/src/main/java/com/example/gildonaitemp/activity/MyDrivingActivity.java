@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.gildonaitemp.DrivingPatternResponse;
+import com.example.gildonaitemp.dto.DrivingPatternResponse;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;

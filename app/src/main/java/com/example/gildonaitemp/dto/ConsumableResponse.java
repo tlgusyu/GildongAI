@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.dto;
 
 import java.io.Serializable;
 

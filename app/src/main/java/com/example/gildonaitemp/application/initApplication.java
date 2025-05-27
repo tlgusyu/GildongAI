@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.application;
 
 import android.app.Application;
 

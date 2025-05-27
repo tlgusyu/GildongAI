@@ -1,4 +1,4 @@
-package com.example.gildonaitemp;
+package com.example.gildonaitemp.dto;
 
 public class ServerUserUpdateRequest {
     private String userName;

@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.gildonaitemp.ConsumableRequest;
-import com.example.gildonaitemp.ConsumableResponse;
+import com.example.gildonaitemp.dto.ConsumableRequest;
+import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;
