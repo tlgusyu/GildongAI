@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ManageCarActivity.class);
             startActivity(intent);
         });
-        Button submenu3 = (Button) findViewById(R.id.btn_check_camera);
+        Button submenu3 = (Button) findViewById(R.id.btn_drive_history);
         submenu3.setOnClickListener(v -> {
             Intent intent = new Intent(this, MyDrivingActivity.class);
             startActivity(intent);

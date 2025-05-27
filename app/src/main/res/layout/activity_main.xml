@@ -157,7 +157,7 @@
             android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_check_camera"
+                android:id="@+id/btn_drive_history"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"

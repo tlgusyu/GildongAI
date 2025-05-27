@@ -10,6 +10,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gildonaitemp.R;
+import com.kakao.sdk.common.KakaoSdk;
 
 public class SplashActivity extends AppCompatActivity {
 
