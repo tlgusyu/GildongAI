@@ -26,12 +26,14 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/search_button"
-        android:iconifiedByDefault="true"
-        android:queryHint="검색어를 입력하세요"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:iconifiedByDefault="true"
+        android:queryHint="검색어를 입력하세요"
         app:iconifiedByDefault="true"
         app:layout_constraintStart_toStartOf="@+id/submenu4"
         app:layout_constraintTop_toBottomOf="@+id/submenu4"></SearchView>
@@ -44,6 +46,4 @@
         android:overScrollMode="always"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/searchView" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

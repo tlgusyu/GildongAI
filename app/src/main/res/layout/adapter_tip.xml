@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         android:text="Sample" />
 
-    <!-- 임시 -->
     <LinearLayout
         android:id="@+id/tipDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:visibility="gone"
         android:animateLayoutChanges="true">
 
@@ -26,13 +26,22 @@
             android:id="@+id/tipImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
+            android:scaleType="center"/>
 
         <TextView
             android:id="@+id/tipText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sample Text" />
+            android:text="Sample Text"
+            android:paddingLeft="32px"
+            android:paddingTop="20px"
+            android:paddingRight="32px"
+            android:paddingBottom="20px"
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="20px"
+            android:textSize="14sp"
+            android:background="@drawable/main_info"
+            />
     </LinearLayout>
 
 </LinearLayout>

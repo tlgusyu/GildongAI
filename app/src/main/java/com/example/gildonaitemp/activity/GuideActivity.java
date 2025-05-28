@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.adapter.TipAdapter;
+import com.example.gildonaitemp.adapter.TipItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,8 @@ public class GuideActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SearchView searchView;
     private TipAdapter adapter;
-    private List<String> tipList;
-    private List<String> filteredList;
+    private List<TipItem> tipList;
+    private List<TipItem> filteredList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,20 @@ public class GuideActivity extends AppCompatActivity {
         tipList = new ArrayList<>();
         filteredList = new ArrayList<>();
 
-        tipList.add("접촉 사고 발생 시 대처 요령");
-        tipList.add("주행 중 시동이 꺼졌을 때 대처 요령");
-        tipList.add("급발진 대처 요령");
-        tipList.add("교차로 우회전 방법");
-        tipList.add("비보호 좌회전 방법");
-        tipList.add("올바른 유턴 방법");
-        tipList.add("원형 교차로(회전교차로)에서의 통행 방법");
+        tipList.add(new TipItem("수신호 동작", getString(R.string.hand_signal_desc), R.drawable.driver_hand_signal, true));
+        tipList.add(new TipItem("교통정리가 없는 교차로: 기본 진입 방법", getString(R.string.intersection_yield_entered_vehicle), R.drawable.intersection_yield_entered_vehicle, true));
+        tipList.add(new TipItem("교통정리가 없는 교차로: 도로 폭에 따른 진입 방법", getString(R.string.intersection_yield_wider_road), R.drawable.intersection_yield_wider_road, true));
+        tipList.add(new TipItem("교통정리가 없는 교차로: 우측도로 차량 우선", getString(R.string.intersection_yield_right_road), R.drawable.intersection_yield_right_road, true));
+        tipList.add(new TipItem("교통정리가 없는 교차로: 좌회전 방법", getString(R.string.intersection_yield_turning_left), R.drawable.intersection_yield_turning_left, true));
+
+        tipList.add(new TipItem("교통사고 발생시 대처법", getString(R.string.traffic_accident_action_desc), 0, false));
+        tipList.add(new TipItem("교통사고의 신고", getString(R.string.traffic_accident_report_desc), 0, false));
+
+        tipList.add(new TipItem("교차로 통행 방법 : 올바른 우회전 방법", getString(R.string.intersection_right_turn_desc), 0, false));
+        tipList.add(new TipItem("교차로 통행 방법 : 올바른 좌회전 방법", getString(R.string.intersection_left_turn_desc), 0, false));
+
+        tipList.add(new TipItem("서행 및 일시정지", getString(R.string.slow_stop_desc), 0, false));
+        tipList.add(new TipItem("과태료의 부과", getString(R.string.traffic_law_fine_desc), 0, false));
 
         filteredList.addAll(tipList);
 
@@ -65,8 +73,8 @@ public class GuideActivity extends AppCompatActivity {
 
     private void filterList(String text) {
         filteredList.clear();
-        for (String item : tipList) {
-            if (item.toLowerCase().contains(text.toLowerCase())) {
+        for (TipItem item : tipList) {
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }
