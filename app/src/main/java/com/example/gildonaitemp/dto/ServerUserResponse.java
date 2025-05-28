@@ -6,6 +6,7 @@ public class ServerUserResponse {
     private String userName;
     private int avgDrivingScore;
     private String createdAt;
+    private String provider;
 
     public String getId() {
         return id;
@@ -25,5 +26,9 @@ public class ServerUserResponse {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public String getProvider() {
+        return provider;
     }
 }

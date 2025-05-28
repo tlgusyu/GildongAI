@@ -93,7 +93,6 @@ public class ManageCarActivity extends AppCompatActivity {
         linearMenu.setOrientation(LinearLayout.VERTICAL);
 
         String[] buttonTexts = {
-                carModel + " 차량 메뉴얼 보기",
                 "엔진 오일 관리", "배터리 관리",
                 "기타 소모품 관리", "정비 내역 조회"
         };
@@ -103,22 +102,29 @@ public class ManageCarActivity extends AppCompatActivity {
         descriptionMap.put("배터리 관리", "배터리 교체 예정일 : " + safeString(data.getBatteryDate()));
         descriptionMap.put("기타 소모품 관리",
                 "부동액 교체 예정일 : " + safeString(data.getCoolantDate()) + "\n" +
-                        "변속기 오일 교체 예정일 : " + safeString(data.getTransmissionOilDate()) + "\n" +
-                        "브레이크 오일 교체 예정일 : " + safeString(data.getBrakeOilDate()) + "\n" +
-                        "워셔 액 교체 예정일 : " + safeString(data.getWasherFluidDate())
+                "변속기 오일 교체 예정일 : " + safeString(data.getTransmissionOilDate()) + "\n" +
+                "브레이크 오일 교체 예정일 : " + safeString(data.getBrakeOilDate()) + "\n" +
+                "워셔 액 교체 예정일 : " + safeString(data.getWasherFluidDate())
+        );
+        descriptionMap.put("정비 내역 조회",
+                "엔진 오일 교체 완료일 : " + safeString(data.getEngineOilDate()) + "\n" +
+                "배터리 교체 완료일 : " + safeString(data.getBatteryDate()) + "\n" +
+                "부동액 교체 완료일 : " + safeString(data.getCoolantDate()) + "\n" +
+                "변속기 오일 교체 완료일 : " + safeString(data.getTransmissionOilDate()) + "\n" +
+                "브레이크 오일 교체 완료일 : " + safeString(data.getBrakeOilDate()) + "\n" +
+                "워셔 액 교체 완료일 : " + safeString(data.getWasherFluidDate())
         );
 
-        for (String text : buttonTexts) {
-            addMenuButton(text, descriptionMap);
-        }
-
+        Button carManual = (Button) findViewById(R.id.manual);
         SpannableStringBuilder carModelBoldText = new SpannableStringBuilder();
         SpannableString carModelBold = new SpannableString(data.getCarModel());
         carModelBold.setSpan(new StyleSpan(Typeface.BOLD), 0, carModel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         carModelBoldText.append(carModelBold);
         carModelBoldText.append(" 차량 메뉴얼 보기");
-        if (!menuList.isEmpty()) {
-            menuList.get(0).setText(carModelBoldText);
+        carManual.setText(carModelBoldText);
+
+        for (String text : buttonTexts) {
+            addMenuButton(text, descriptionMap);
         }
     }
     String safeString(String s) {

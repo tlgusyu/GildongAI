@@ -2,6 +2,7 @@ package com.example.gildonaitemp.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +43,10 @@ public class MyDrivingActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<DrivingPatternResponse> patterns) {
                 for (DrivingPatternResponse pattern : patterns) {
-                    String addHistory = drivingHistory.getText().toString() +
-                            pattern.getRecordedAt() + "\t" + pattern.getDrivingScore() + "\n";
+                    String addHistory = pattern.getRecordedAt().substring(0, 10)
+                            + "        "
+                            + pattern.getDrivingScore() + "\n"
+                            + drivingHistory.getText().toString();
                     drivingHistory.setText(addHistory);
                 }
             }

@@ -109,7 +109,7 @@ public class UpdateCarActivity extends AppCompatActivity {
         call.enqueue(new ResponseCallback<ConsumableResponse>() {
             @Override
             public void onSuccess(ConsumableResponse response) {
-                Log.d("UpdateCar", "차량등록");
+                Log.d("UpdateCar", "차량수정");
                 Toast.makeText(UpdateCarActivity.this, "차량 수정 완료", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(UpdateCarActivity.this, EditAccountActivity.class);

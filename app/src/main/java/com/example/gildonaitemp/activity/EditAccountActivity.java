@@ -116,12 +116,12 @@ public class EditAccountActivity extends AppCompatActivity {
                 userIdTextView.setText(user.getLoginId());
                 userNameTextView.setText(user.getUserName());
 
-                //임시
-                String provider = "LOCAL";
-                if(provider.equals("KAKAO")) { //SNS 로그인이면 비밀번호 변경 비활성화
+                //getProvider 확인
+                if(user.getProvider().equals("KAKAO")) { //SNS 로그인이면 비밀번호 변경 비활성화
+
                     ImageView SNS = (ImageView) findViewById(R.id.isSNS);
                     SNS.setImageResource(R.drawable.button_kakao);
-                    disableChangePW();
+                    disableChange();
                 }
             }
 
@@ -147,10 +147,15 @@ public class EditAccountActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<ConsumableResponse> consumables) {
                 if (consumables != null && !consumables.isEmpty()) {
+                    String temp = null;
+                    for(ConsumableResponse c : consumables) {
+                        temp += "[" + c.getCarModel() + "] ";
+                    }
+                    Log.w("consumables", temp);
                     TextView carNumberTextView = (TextView) findViewById(R.id.carNumber);
-                    carNumberTextView.setText(consumables.get(3).getCarNumber()); //최신으로
+                    carNumberTextView.setText(consumables.get(0).getCarNumber()); //최신으로
                     TextView carModelTextView = (TextView) findViewById(R.id.carModelName);
-                    carModelTextView.setText(consumables.get(3).getCarModel()); //최신으로
+                    carModelTextView.setText(consumables.get(0).getCarModel()); //최신으로
                 } else {
                     Log.w("fetchConsumables", "소모품 내역 조회 실패");
                     Toast.makeText(EditAccountActivity.this, "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
@@ -178,17 +183,20 @@ public class EditAccountActivity extends AppCompatActivity {
         updateUserCar.setOnClickListener(v -> {
             Intent intent = new Intent(EditAccountActivity.this, UpdateCarActivity.class);
             startActivity(intent);
-            //finish();
+            finish();
         });
 
     }
 
-    private void disableChangePW() {
+    private void disableChange() {
         userPasswordTextView.setBackgroundColor(Color.TRANSPARENT);
         userPasswordCheckTextView.setBackgroundColor(Color.TRANSPARENT);
         userPasswordTextView.setHint("");
         userPasswordCheckTextView.setHint("");
         userPasswordTextView.setEnabled(false);
         userPasswordCheckTextView.setEnabled(false);
+
+        userNameTextView.setBackgroundColor(Color.TRANSPARENT);
+        userNameTextView.setEnabled(false);
     }
 }

@@ -28,4 +28,8 @@ public class ConsumableResponse implements Serializable {
     public String getWasherFluidDate() { return washerFluidDate; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
+
+    public String getTempInfo() {
+        return carModel+engineOilDate+batteryDate;
+    }
 }

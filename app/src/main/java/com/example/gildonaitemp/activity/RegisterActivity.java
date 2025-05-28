@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new ResponseCallback<ServerUserResponse>() {
             @Override
             public void onSuccess(ServerUserResponse response) {
-                Log.d("registerUser", "User created: " + response.getUserName());
+                Log.d("registerUser", "User created: " + response.getId());
                 Toast.makeText(RegisterActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);

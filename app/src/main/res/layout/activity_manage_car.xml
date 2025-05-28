@@ -68,7 +68,7 @@
             android:id="@+id/repair_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/main_info"
             android:gravity="center"
             android:orientation="horizontal"
@@ -102,6 +102,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/repair_info"
             app:layout_constraintStart_toStartOf="@+id/repair_info"
@@ -111,9 +113,30 @@
                 android:id="@+id/menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
+                android:clipToPadding="false"
                 android:orientation="vertical"
-                tools:layout_editor_absoluteX="8dp" />
+                android:paddingBottom="24dp"
+                tools:layout_editor_absoluteX="8dp" >
+
+                <Button
+                    android:id="@+id/manual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14px"
+                    android:layout_marginBottom="8px"
+                    android:backgroundTint="@android:color/transparent"
+                    android:paddingLeft="16px"
+                    android:paddingTop="44px"
+                    android:paddingRight="16px"
+                    android:paddingBottom="44px"
+                    android:text="차량 매뉴얼 보기"
+                    android:textColor="@color/black"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/blue"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
