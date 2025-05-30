@@ -12,12 +12,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.dto.ConsumableRequest;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;
 import com.example.gildonaitemp.api.ResponseCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,8 +38,17 @@ public class RegisterCarActivity extends AppCompatActivity {
         AutoCompleteTextView etCarModel = findViewById(R.id.etCarModel);
         EditText etCarNum = (EditText) findViewById(R.id.etCarNum);
 
-        //차량모델 리스트 임시
-        String[] carModelList = {"소나타", "아반떼", "그랜저"};
+        ArrayList<String> carModelList = new ArrayList<>();
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<List<CarModelResponse>> call = apiService.getAllCarModels();
+        call.enqueue(new ResponseCallback<List<CarModelResponse>>() {
+            public void onSuccess(List<CarModelResponse> carModels) {
+                for(CarModelResponse model : carModels) {
+                    carModelList.add(model.getModelName());
+                }
+            }
+        });
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,

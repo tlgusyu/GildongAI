@@ -236,7 +236,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onError(Response<ServerUserResponse> response) {
                                 super.onError(response);
                                 if (response.code() == 404) {
-                                    ServerUserRequest newUser = new ServerUserRequest(userName, loginId, "kakao_temp_pw");
+                                    ServerUserRequest newUser = new ServerUserRequest(userName, loginId, "kakao_temp_pw", "KAKAO");
                                     apiService.createUser(newUser).enqueue(new ResponseCallback<ServerUserResponse>() {
                                         @Override
                                         public void onSuccess(ServerUserResponse newUserResponse) {

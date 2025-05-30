@@ -89,7 +89,7 @@
                 android:id="@+id/schedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4/16 일요일"
+                android:text="YYYY-MM-DD"
                 android:textSize="16dp"
                 android:textStyle="bold" />
             <TextView

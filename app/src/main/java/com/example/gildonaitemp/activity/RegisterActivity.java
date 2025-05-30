@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerUser(String userName, String loginId, String password) {
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        ServerUserRequest userRequest = new ServerUserRequest(userName, loginId, password);
+        ServerUserRequest userRequest = new ServerUserRequest(userName, loginId, password, "LOCAL");
 
         Call<ServerUserResponse> call = apiService.createUser(userRequest);
         call.enqueue(new ResponseCallback<ServerUserResponse>() {

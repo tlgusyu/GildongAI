@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableRequest;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
@@ -19,6 +20,7 @@ import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;
 import com.example.gildonaitemp.api.ResponseCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,8 +49,8 @@ public class UpdateCarActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<ConsumableResponse> consumables) {
                 if (consumables != null && !consumables.isEmpty()) {
-                    etCarNum.setText(consumables.get(0).getCarNumber()); //최신으로
-                    etCarModel.setText(consumables.get(0).getCarModel()); //최신으로
+                    etCarNum.setText(consumables.get(0).getCarNumber());
+                    etCarModel.setText(consumables.get(0).getCarModel());
                 } else {
                     Log.w("fetchConsumables", "소모품 내역 조회 실패");
                     Toast.makeText(UpdateCarActivity.this, "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
@@ -75,8 +77,19 @@ public class UpdateCarActivity extends AppCompatActivity {
     }
 
     private void enterCarInfo() {
-        //차량모델 리스트 임시
-        String[] carModelList = {"소나타", "아반떼", "그랜저"};
+
+        ArrayList<String> carModelList = new ArrayList<>();
+
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<List<CarModelResponse>> call = apiService.getAllCarModels();
+        call.enqueue(new ResponseCallback<List<CarModelResponse>>() {
+            public void onSuccess(List<CarModelResponse> carModels) {
+                for(CarModelResponse model : carModels) {
+                    Log.e("carModel", model.getModelName());
+                    carModelList.add(model.getModelName());
+                }
+            }
+        });
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
@@ -112,7 +125,7 @@ public class UpdateCarActivity extends AppCompatActivity {
                 Log.d("UpdateCar", "차량수정");
                 Toast.makeText(UpdateCarActivity.this, "차량 수정 완료", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(UpdateCarActivity.this, EditAccountActivity.class);
+                Intent intent = new Intent(UpdateCarActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }

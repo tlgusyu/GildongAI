@@ -67,7 +67,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/white"
-                android:hint="차량 모델명 (예: 아반떼)"
+                android:hint="차량 모델명 (예: Avante)"
                 android:inputType="text"
                 android:padding="12dp" />
 

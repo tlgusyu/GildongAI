@@ -1,4 +1,6 @@
 package com.example.gildonaitemp.activity;
+import com.example.gildonaitemp.dto.CarModelResponse;
+import com.example.gildonaitemp.dto.ConsumableOverviewResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiClient;
@@ -7,8 +9,10 @@ import com.example.gildonaitemp.api.ResponseCallback;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -38,9 +42,49 @@ public class ManageCarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_car);
 
-        setCarInfo();
+        setNextDue();
+        //setCarInfo();
     }
 
+    private void setNextDue() {
+        TextView schedule = (TextView) findViewById(R.id.schedule);
+
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("userId", null);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<ConsumableOverviewResponse> call = apiService.getConsumableOverview(userId);
+
+        call.enqueue(new ResponseCallback<ConsumableOverviewResponse>() {
+            @Override
+            public void onSuccess(ConsumableOverviewResponse consumableOverview) {
+                String nextDueDate = consumableOverview.getNextDueDate();
+                if (nextDueDate != null) {
+                    String nextDueDateFormat = nextDueDate.substring(0, 4) + "-" +
+                            nextDueDate.substring(4, 6) + "-" +
+                            nextDueDate.substring(6, 8);
+                    Log.d("NEXT_DUE", "다음 교체 예정일: " + nextDueDateFormat);
+                    schedule.setText(nextDueDateFormat);
+                } else {
+                    Log.d("NEXT_DUE", "예정된 교체 항목이 없습니다.");
+                    Toast.makeText(ManageCarActivity.this, "정비 예정일이 없습니다", Toast.LENGTH_SHORT).show();
+                }
+
+                setupUIWithConsumable(consumableOverview.getAll().get(0));
+            }
+
+            @Override
+            public void onError(Response<ConsumableOverviewResponse> response) {
+                super.onError(response);
+                if (response.code() == 404) {
+                    Toast.makeText(getApplicationContext(), "사용자 조회 실패" + response.code(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "ConsumableOverview 조회 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    /*
     private void setCarInfo() {
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = prefs.getString("userId", null);
@@ -52,7 +96,7 @@ public class ManageCarActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<ConsumableResponse> consumables) {
                 if (consumables != null && !consumables.isEmpty()) {
-                    setupUIWithConsumable(consumables.get(0)); // 가장 최신 내역으로
+                    setupUIWithConsumable(consumables.get(0));
                 } else {
                     Log.w("fetchConsumables", "소모품 내역 조회 실패");
                     Toast.makeText(getApplicationContext(), "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
@@ -77,10 +121,8 @@ public class ManageCarActivity extends AppCompatActivity {
         });
 
     }
-
+*/
     private void setupUIWithConsumable(ConsumableResponse data) {
-        TextView schedule = (TextView) findViewById(R.id.schedule);
-        schedule.setText("2025-05-06");
 
         String carModel = data.getCarModel();
 
@@ -115,18 +157,40 @@ public class ManageCarActivity extends AppCompatActivity {
                 "워셔 액 교체 완료일 : " + safeString(data.getWasherFluidDate())
         );
 
-        Button carManual = (Button) findViewById(R.id.manual);
-        SpannableStringBuilder carModelBoldText = new SpannableStringBuilder();
-        SpannableString carModelBold = new SpannableString(data.getCarModel());
-        carModelBold.setSpan(new StyleSpan(Typeface.BOLD), 0, carModel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        carModelBoldText.append(carModelBold);
-        carModelBoldText.append(" 차량 메뉴얼 보기");
-        carManual.setText(carModelBoldText);
+        SetManualBtn(carModel);
 
         for (String text : buttonTexts) {
             addMenuButton(text, descriptionMap);
         }
     }
+
+    private void SetManualBtn(String carModel) {
+        Button carManual = (Button) findViewById(R.id.manual);
+        SpannableStringBuilder carModelBoldBuilder = new SpannableStringBuilder();
+        SpannableString carModelBold = new SpannableString(carModel);
+        carModelBold.setSpan(new StyleSpan(Typeface.BOLD), 0, carModel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        carModelBoldBuilder.append(carModelBold);
+        carModelBoldBuilder.append(" 차량 메뉴얼 보기");
+        carManual.setText(carModelBoldBuilder);
+
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<List<CarModelResponse>> call = apiService.getCarModelsByModelName(carModel);
+        call.enqueue(new ResponseCallback<List<CarModelResponse>>() {
+            @Override
+            public void onSuccess(List<CarModelResponse> carModels) {
+                for (CarModelResponse car : carModels) {
+                    Log.d("CAR_MODEL", car.getModelName() + car.getManualUrl());
+                    carManual.setOnClickListener(v -> {
+                        String url = car.getManualUrl();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    });
+
+                }
+            }
+        });
+    }
+
     String safeString(String s) {
         return s == null ? "" : s;
     }
@@ -146,7 +210,6 @@ public class ManageCarActivity extends AppCompatActivity {
         params.setMargins(0, 14, 0, 14);
         menu.setLayoutParams(params);
 
-        //설명 TextView
         TextView descriptionView = new TextView(this);
         descriptionView.setText((String)descriptionMap.get(buttonText));
         descriptionView.setVisibility(View.GONE);
@@ -154,7 +217,6 @@ public class ManageCarActivity extends AppCompatActivity {
         descriptionView.setTextSize(14);
         descriptionView.setBackgroundResource(R.drawable.main_info);
 
-        //클릭 시 토글 동작
         menu.setOnClickListener(v -> {
             if (descriptionView.getVisibility() == View.GONE) {
                 descriptionView.setVisibility(View.VISIBLE);
@@ -163,7 +225,6 @@ public class ManageCarActivity extends AppCompatActivity {
             }
         });
 
-        //LinearLayout에 버튼과 설명을 같이 추가
         LinearLayout container = (LinearLayout) findViewById(R.id.menu);
         container.addView(menu);
         container.addView(descriptionView);
