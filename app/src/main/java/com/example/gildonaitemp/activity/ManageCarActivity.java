@@ -146,15 +146,15 @@ public class ManageCarActivity extends AppCompatActivity {
                 "부동액 교체 예정일 : " + safeString(data.getCoolantDate()) + "\n" +
                 "변속기 오일 교체 예정일 : " + safeString(data.getTransmissionOilDate()) + "\n" +
                 "브레이크 오일 교체 예정일 : " + safeString(data.getBrakeOilDate()) + "\n" +
-                "워셔 액 교체 예정일 : " + safeString(data.getWasherFluidDate())
+                "워셔 액 교체 예정일 : " + safeString(data.getAirconFilterDate())
         );
         descriptionMap.put("정비 내역 조회",
-                "엔진 오일 교체 완료일 : " + safeString(data.getEngineOilDate()) + "\n" +
-                "배터리 교체 완료일 : " + safeString(data.getBatteryDate()) + "\n" +
-                "부동액 교체 완료일 : " + safeString(data.getCoolantDate()) + "\n" +
-                "변속기 오일 교체 완료일 : " + safeString(data.getTransmissionOilDate()) + "\n" +
-                "브레이크 오일 교체 완료일 : " + safeString(data.getBrakeOilDate()) + "\n" +
-                "워셔 액 교체 완료일 : " + safeString(data.getWasherFluidDate())
+                "엔진 오일 교체 완료일 : " + safeString(data.getEngineOilChangedDate()) + "\n" +
+                "배터리 교체 완료일 : " + safeString(data.getBatteryChangedDate()) + "\n" +
+                "부동액 교체 완료일 : " + safeString(data.getCoolantChangedDate()) + "\n" +
+                "변속기 오일 교체 완료일 : " + safeString(data.getTransmissionOilChangedDate()) + "\n" +
+                "브레이크 오일 교체 완료일 : " + safeString(data.getBrakeOilChangedDate()) + "\n" +
+                "워셔 액 교체 완료일 : " + safeString(data.getAirconFilterChangedDate())
         );
 
         SetManualBtn(carModel);
