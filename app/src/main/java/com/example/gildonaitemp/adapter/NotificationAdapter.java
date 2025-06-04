@@ -32,10 +32,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         NotificationItem notification = notificationList.get(position);
 
-        holder.textViewCategory.setText(notification.getCategory());
+        holder.textViewCategory.setText(notification.getTitle()); //이름변경
         holder.textViewMessage.setText(notification.getMessage());
 
-        switch (notification.getType()) {
+        switch (notification.getTitle()) {
             case "차량 점검":
                 holder.imageViewIcon.setImageResource(R.drawable.ic_vehicle_check);
                 break;
@@ -45,11 +45,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             case "차량 소모품":
                 holder.imageViewIcon.setImageResource(R.drawable.ic_vehicle_parts);
                 break;
-            case "지난 알림":
-                holder.imageViewIcon.setImageResource(R.drawable.ic_past_notification);
-                break;
             default:
-                holder.imageViewIcon.setImageResource(R.drawable.ic_vehicle_check);
+                holder.imageViewIcon.setImageResource(R.drawable.ic_past_notification);
                 break;
         }
     }

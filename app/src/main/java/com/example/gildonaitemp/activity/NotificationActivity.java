@@ -1,6 +1,8 @@
 package com.example.gildonaitemp.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +13,19 @@ import com.example.gildonaitemp.adapter.NotificationAdapter;
 import com.example.gildonaitemp.adapter.NotificationItem;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.adapter.VerticalSpaceItemDecoration;
+import com.example.gildonaitemp.alert.NotificationCallback;
+import com.example.gildonaitemp.alert.SSEClient;
+import com.example.gildonaitemp.api.ApiClient;
+import com.example.gildonaitemp.api.ApiService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotificationActivity extends AppCompatActivity {
 
@@ -21,43 +33,98 @@ public class NotificationActivity extends AppCompatActivity {
     private NotificationAdapter newNotificationAdapter, oldNotificationAdapter;
     private List<NotificationItem> newNotifications, oldNotifications;
 
+    private ApiService apiService;
+    private SSEClient alertSSEClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
         recyclerViewNew = findViewById(R.id.recyclerViewNewNotifications);
-        recyclerViewOld = findViewById(R.id.recyclerViewOldNotifications);
 
-        // 새로운 알림 샘플 데이터
+        // 기존 알림 (샘플 데이터)
         newNotifications = new ArrayList<>();
-        newNotifications.add(new NotificationItem("차량 점검", "차량 점검", "소나타 12가 1234 차량의 차량 점검일이 다가옵니다. (3/14)"));
-        newNotifications.add(new NotificationItem("안전", "안전", "오늘 졸음운전이 감지되었어요.\n"+"요즘 피곤하신가요?"));
-        newNotifications.add(new NotificationItem("안전", "안전", "최근 운전 점수가 낮게 나왔어요.\n"+"부드러운 주행으로 점수를 올려볼까요?"));
-        newNotifications.add(new NotificationItem("차량 소모품", "차량 소모품", "교체 완료! 소나타 12가 3456 차량 (04/04)"));
+        newNotifications.add(0, new NotificationItem("차량 점검", "소나타 12가 1234 차량의 차량 점검일이 다가옵니다. (3/14)"));
+        newNotifications.add(0, new NotificationItem("안전", "오늘 졸음운전이 감지되었어요.\n"+"요즘 피곤하신가요?"));
+        newNotifications.add(0, new NotificationItem("안전", "최근 운전 점수가 낮게 나왔어요.\n"+"부드러운 주행으로 점수를 올려볼까요?"));
+        newNotifications.add(0, new NotificationItem("차량 소모품", "교체 완료! 소나타 12가 3456 차량 (04/04)"));
+        setNotification();
 
-        // 지난 알림 샘플 데이터
-        oldNotifications = new ArrayList<>();
-        oldNotifications.add(new NotificationItem("차량 소모품", "차량 소모품", "교체 완료! 소나타 12가 1234 차량 (3/10)"));
-        oldNotifications.add(new NotificationItem("차량 점검", "차량 점검", "소나타 12가 3456 의 차량 점검일이 다가옵니다. (3/30)"));
-        oldNotifications.add(new NotificationItem("차량 점검", "차량 점검", "점검 완료! 소나타 12가 3456 차량 (3/30)"));
+        alertSSEClient = new SSEClient();
+        alertSSEClient.setCallback(new NotificationCallback() {
+            @Override
+            public void onNewNotification(NotificationItem item) {
+                runOnUiThread(() -> {
+                    Log.i("Alert", "NotificationCallback");
+                    newNotifications.add(0, item);
+                    refreshNotification();
+                });
+            }
+        });
 
-        // 어댑터 연결
-        newNotificationAdapter = new NotificationAdapter(newNotifications);
-        recyclerViewNew.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewNew.setAdapter(newNotificationAdapter);
+        apiService = ApiClient.getClient().create(ApiService.class);
 
-        oldNotificationAdapter = new NotificationAdapter(oldNotifications);
-        recyclerViewOld.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewOld.setAdapter(oldNotificationAdapter);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("userId", null);
+
+        if (userId != null) {
+            alertSSEClient.startSSE(userId);
+
+            //test
+            Call<ResponseBody> call = apiService.sendTestAlert(userId);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        try {
+                            String rawJson = response.body().string();
+                            Log.i("TestAlert", "원본 응답: " + rawJson);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.e("TestAlert", "응답 실패: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("TestAlert", "실패: " + t.getMessage());
+                }
+            });
+        } else {
+            Log.e("NotificationActivity", "userId가 없습니다.");
+        }
+    }
+
+
+    private void setNotification() {
+        refreshNotification();
 
         // 16dp 간격 적용 (ItemDecoration)
         int spacingInPixels = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
 
         recyclerViewNew.addItemDecoration(new VerticalSpaceItemDecoration(spacingInPixels));
-        recyclerViewOld.addItemDecoration(new VerticalSpaceItemDecoration(spacingInPixels));
+    }
 
+    private void refreshNotification() {
+        // 어댑터 연결
+        newNotificationAdapter = new NotificationAdapter(newNotifications);
+        recyclerViewNew.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewNew.setAdapter(newNotificationAdapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        alertSSEClient.stopSSE();
     }
 }

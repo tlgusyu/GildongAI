@@ -10,6 +10,7 @@ import com.example.gildonaitemp.dto.UserRegisterRequest;
 import com.example.gildonaitemp.dto.ServerUserUpdateRequest;
 import com.example.gildonaitemp.dto.WeeklyDrivingPatternsResponse;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -17,7 +18,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-//import com.kakao.sdk.user.model.UserResponse;
 
 import java.util.List;
 
@@ -54,6 +54,11 @@ public interface ApiService {
 
     @GET("/api/car-models/model/{modelName}")
     Call<List<CarModelResponse>> getCarModelsByModelName(@Path("modelName") String modelName);
+
+    //test
+    @POST("alerts/test/{userId}")
+    Call<ResponseBody> sendTestAlert(@Path("userId") String userId);
+
 }
 
 
