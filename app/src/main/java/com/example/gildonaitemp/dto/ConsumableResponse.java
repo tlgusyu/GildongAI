@@ -13,14 +13,12 @@ public class ConsumableResponse implements Serializable {
     private String transmissionOilDate;
     private String brakeOilDate;
     private String airconFilterDate;
-
     private String engineOilChangedDate;
     private String batteryChangedDate;
     private String coolantChangedDate;
     private String transmissionOilChangedDate;
     private String brakeOilChangedDate;
     private String airconFilterChangedDate;
-
     private String createdAt;
     private String updatedAt;
 
@@ -42,8 +40,4 @@ public class ConsumableResponse implements Serializable {
     public String getAirconFilterChangedDate() { return airconFilterChangedDate; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
-
-    public String getTempInfo() {
-        return carModel+engineOilDate+batteryDate;
-    }
 }

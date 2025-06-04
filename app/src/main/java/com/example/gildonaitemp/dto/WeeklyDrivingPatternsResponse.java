@@ -1,6 +1,6 @@
 package com.example.gildonaitemp.dto;
 
-public class WeeklyDrivingPatterns {
+public class WeeklyDrivingPatternsResponse {
     private String weekStart;
     private double averageScore;
 

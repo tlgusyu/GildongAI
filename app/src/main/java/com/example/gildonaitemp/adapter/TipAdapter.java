@@ -44,7 +44,7 @@ public class TipAdapter extends RecyclerView.Adapter<TipAdapter.TipViewHolder> {
         } else {
             holder.tipImage.setVisibility(View.GONE);
         }
-        holder.layout.setVisibility(View.GONE); // 초기 상태
+        holder.layout.setVisibility(View.GONE);
         holder.button.setTextColor(Color.BLACK);
         holder.button.setBackgroundResource(R.drawable.tip_button);
 

@@ -71,7 +71,7 @@
                 android:layout_width="340dp"
                 android:layout_height="100dp"
                 android:max="100"
-                android:progress="75"
+                android:progress="0"
                 app:indicatorColor="@color/blue"
                 app:indicatorSize="220dp"
                 app:trackCornerRadius="10dp"
@@ -83,7 +83,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="75"
+                android:text="0"
                 android:textColor="@color/blue"
                 android:textSize="64sp"
                 android:textStyle="bold" />

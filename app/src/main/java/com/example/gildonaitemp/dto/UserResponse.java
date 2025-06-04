@@ -1,10 +1,10 @@
 package com.example.gildonaitemp.dto;
 
-public class ServerUserResponse {
+public class UserResponse {
     private String id;
     private String loginId;
     private String userName;
-    private int avgDrivingScore;
+    private double avgDrivingScore;
     private String createdAt;
     private String provider;
 
@@ -20,7 +20,7 @@ public class ServerUserResponse {
         return userName;
     }
 
-    public int getAvgDrivingScore() {
+    public double getAvgDrivingScore() {
         return avgDrivingScore;
     }
 

@@ -1,12 +1,12 @@
 package com.example.gildonaitemp.activity;
+import com.example.gildonaitemp.api.ApiCaller;
 import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableOverviewResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
-import com.example.gildonaitemp.api.ApiClient;
-import com.example.gildonaitemp.api.ApiService;
 import com.example.gildonaitemp.api.ResponseCallback;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,7 +18,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -43,93 +42,67 @@ public class ManageCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_car);
 
         setNextDue();
-        //setCarInfo();
     }
 
     private void setNextDue() {
-        TextView schedule = (TextView) findViewById(R.id.schedule);
 
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = prefs.getString("userId", null);
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<ConsumableOverviewResponse> call = apiService.getConsumableOverview(userId);
 
-        call.enqueue(new ResponseCallback<ConsumableOverviewResponse>() {
+        ApiCaller.getConsumableOverview(userId, new ResponseCallback<ConsumableOverviewResponse>() {
             @Override
             public void onSuccess(ConsumableOverviewResponse consumableOverview) {
+                TextView preSchedule = (TextView) findViewById(R.id.preSchedule);
+                TextView schedule = (TextView) findViewById(R.id.schedule);
+                TextView postSchedule = (TextView) findViewById(R.id.postSchedule);
+
                 String nextDueDate = consumableOverview.getNextDueDate();
                 if (nextDueDate != null) {
+                    preSchedule.setText("다음 정비 예정일은 ");
                     String nextDueDateFormat = nextDueDate.substring(0, 4) + "-" +
                             nextDueDate.substring(4, 6) + "-" +
                             nextDueDate.substring(6, 8);
-                    Log.d("NEXT_DUE", "다음 교체 예정일: " + nextDueDateFormat);
                     schedule.setText(nextDueDateFormat);
+                    postSchedule.setText("입니다.");
                 } else {
-                    Log.d("NEXT_DUE", "예정된 교체 항목이 없습니다.");
-                    Toast.makeText(ManageCarActivity.this, "정비 예정일이 없습니다", Toast.LENGTH_SHORT).show();
+                    preSchedule.setText("다음 정비 예정일이 없습니다");
+                    schedule.setText("");
+                    postSchedule.setText("");
                 }
 
-                setupUIWithConsumable(consumableOverview.getAll().get(0));
+                if (consumableOverview.getAll() != null && !consumableOverview.getAll().isEmpty()) {
+                    setConsumable(consumableOverview.getAll().get(0));
+                } else {
+                    Toast.makeText(ManageCarActivity.this, "소모품 내역을 불러올 수 없습니다", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onError(Response<ConsumableOverviewResponse> response) {
-                super.onError(response);
                 if (response.code() == 404) {
-                    Toast.makeText(getApplicationContext(), "사용자 조회 실패" + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManageCarActivity.this, "사용자를 찾을 수 없습니다" + response.code(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "ConsumableOverview 조회 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManageCarActivity.this, "차량 관리 조회 실패", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
-    }
-
-    /*
-    private void setCarInfo() {
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String userId = prefs.getString("userId", null);
-
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<List<ConsumableResponse>> call = apiService.getConsumablesByUser(userId);
-
-        call.enqueue(new ResponseCallback<List<ConsumableResponse>>() {
             @Override
-            public void onSuccess(List<ConsumableResponse> consumables) {
-                if (consumables != null && !consumables.isEmpty()) {
-                    setupUIWithConsumable(consumables.get(0));
-                } else {
-                    Log.w("fetchConsumables", "소모품 내역 조회 실패");
-                    Toast.makeText(getApplicationContext(), "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
-                }
+            public void onFailure(Call<ConsumableOverviewResponse> call, Throwable t) {
+                Toast.makeText(ManageCarActivity.this, "서버 연결에 실패했습니다", Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onError(Response<List<ConsumableResponse>> response) {
-                super.onError(response);
-                if (response.code() == 404) {
-                    Toast.makeText(getApplicationContext(), "사용자 없음(에러 코드 : " + response.code(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ConsumableResponse>> call, Throwable t) {
-                super.onFailure(call, t);
-                Toast.makeText(getApplicationContext(), "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
-            }
         });
 
     }
-*/
-    private void setupUIWithConsumable(ConsumableResponse data) {
 
+    private void setConsumable(@NonNull ConsumableResponse data) {
         String carModel = data.getCarModel();
 
         TextView carNumberTextView = (TextView) findViewById(R.id.carNumber);
         TextView carModelTextView = (TextView) findViewById(R.id.carModel);
         carNumberTextView.setText(data.getCarNumber());
         carModelTextView.setText(carModel);
+
+        SetManualBtn(carModel);
 
         LinearLayout linearMenu = (LinearLayout) findViewById(R.id.menu);
         linearMenu.setOrientation(LinearLayout.VERTICAL);
@@ -157,8 +130,6 @@ public class ManageCarActivity extends AppCompatActivity {
                 "워셔 액 교체 완료일 : " + safeString(data.getAirconFilterChangedDate())
         );
 
-        SetManualBtn(carModel);
-
         for (String text : buttonTexts) {
             addMenuButton(text, descriptionMap);
         }
@@ -173,29 +144,39 @@ public class ManageCarActivity extends AppCompatActivity {
         carModelBoldBuilder.append(" 차량 메뉴얼 보기");
         carManual.setText(carModelBoldBuilder);
 
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<List<CarModelResponse>> call = apiService.getCarModelsByModelName(carModel);
-        call.enqueue(new ResponseCallback<List<CarModelResponse>>() {
+        ApiCaller.getCarModelsByModelName(carModel, new ResponseCallback<List<CarModelResponse>>() {
             @Override
             public void onSuccess(List<CarModelResponse> carModels) {
-                for (CarModelResponse car : carModels) {
-                    Log.d("CAR_MODEL", car.getModelName() + car.getManualUrl());
+                if (carModels == null || carModels.isEmpty()) {
+                    Toast.makeText(ManageCarActivity.this, "차량 모델 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                CarModelResponse car = carModels.get(0);
                     carManual.setOnClickListener(v -> {
                         String url = car.getManualUrl();
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
                     });
+            }
 
-                }
+            @Override
+            public void onError(Response<List<CarModelResponse>> response) {
+                Toast.makeText(ManageCarActivity.this, "차량 모델 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<List<CarModelResponse>> call, Throwable t) {
+                Toast.makeText(ManageCarActivity.this, "서버 연결에 실패했습니다", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     String safeString(String s) {
         return s == null ? "" : s;
     }
 
-    private Button addMenuButton(String buttonText, Map descriptionMap) {
+    private void addMenuButton(String buttonText, Map descriptionMap) {
 
         Button menu = new Button(this);
         menu.setBackgroundResource(R.drawable.menu_button);
@@ -230,7 +211,6 @@ public class ManageCarActivity extends AppCompatActivity {
         container.addView(descriptionView);
 
         menuList.add(menu);
-        return menu;
     }
 
 }

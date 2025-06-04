@@ -3,7 +3,6 @@ package com.example.gildonaitemp.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,12 +10,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.gildonaitemp.api.ApiCaller;
+import com.example.gildonaitemp.api.ResponseCallback;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.R;
-import com.example.gildonaitemp.dto.ServerUserResponse;
-import com.example.gildonaitemp.api.ApiClient;
-import com.example.gildonaitemp.api.ApiService;
-import com.example.gildonaitemp.api.ResponseCallback;
+import com.example.gildonaitemp.dto.UserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +35,61 @@ public class ManageAccountActivity extends AppCompatActivity {
         setMenuBtns();
     }
 
+    private void setUserInfo() {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("userId", null);
+
+        ApiCaller.getUserById(userId, new ResponseCallback<UserResponse>() {
+            @Override
+            public void onSuccess(UserResponse user) {
+                TextView usernameTextView = findViewById(R.id.username);
+                usernameTextView.setText(user.getUserName());
+            }
+
+            @Override
+            public void onError(Response<UserResponse> response) {
+                if (response.code() == 404) {
+                    Toast.makeText(ManageAccountActivity.this, "사용자를 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ManageAccountActivity.this, "사용자 정보 조회 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Toast.makeText(ManageAccountActivity.this, "서버 연결에 실패했습니다", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        ApiCaller.getConsumablesByUser(userId, new ResponseCallback<List<ConsumableResponse>>() {
+            @Override
+            public void onSuccess(List<ConsumableResponse> consumables) {
+                if (consumables != null && !consumables.isEmpty()) {
+                    TextView carNumberTextView = findViewById(R.id.carNumber);
+                    carNumberTextView.setText(consumables.get(0).getCarNumber());
+                } else {
+                    Toast.makeText(ManageAccountActivity.this, "차량 번호 조회 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(Response<List<ConsumableResponse>> response) {
+                if (response.code() == 404) {
+                    Toast.makeText(ManageAccountActivity.this, "사용자를 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ManageAccountActivity.this, "차량 번호 조회 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ConsumableResponse>> call, Throwable t) {
+                Toast.makeText(ManageAccountActivity.this, "서버 연결에 실패했습니다", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     private void setMenuBtns() {
         LinearLayout linearMenu = (LinearLayout) findViewById(R.id.menu);
         linearMenu.setOrientation(LinearLayout.VERTICAL);
@@ -50,69 +103,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         editAccount.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditAccountActivity.class);
             startActivity(intent);
-        });
-    }
-
-    private void setUserInfo() {
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String userId = prefs.getString("userId", null);
-
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<ServerUserResponse> callUser = apiService.getUserById(userId);
-
-        callUser.enqueue(new ResponseCallback<ServerUserResponse>() {
-            @Override
-            public void onSuccess(ServerUserResponse user) {
-                TextView usernameTextView = (TextView) findViewById(R.id.username);
-                usernameTextView.setText(user.getUserName());
-            }
-
-            @Override
-            public void onError(Response<ServerUserResponse> response) {
-                super.onError(response);
-                if (response.code() == 404) {
-                    Log.e("fetchUserById", "사용자 없음(에러 코드 : 401)");
-                } else {
-                    Log.e("fetchUserById", "사용자 정보 조회 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerUserResponse> call, Throwable t) {
-                super.onFailure(call, t);
-                Log.e("fetchUserById", "네트워크 오류", t);
-            }
-        });
-
-        Call<List<ConsumableResponse>> callCar = apiService.getConsumablesByUser(userId);
-
-        callCar.enqueue(new ResponseCallback<List<ConsumableResponse>>() {
-            @Override
-            public void onSuccess(List<ConsumableResponse> consumables) {
-                if (consumables != null && !consumables.isEmpty()) {
-                    TextView carNumberTextView = (TextView) findViewById(R.id.carNumber);
-                    carNumberTextView.setText(consumables.get(0).getCarNumber());
-                } else {
-                    Log.w("fetchConsumables", "소모품 내역 조회 실패");
-                    Toast.makeText(ManageAccountActivity.this, "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(Response<List<ConsumableResponse>> response) {
-                super.onError(response);
-                if (response.code() == 404) {
-                    Toast.makeText(getApplicationContext(), "사용자 없음(에러 코드 : " + response.code(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "소모품 내역 조회 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ConsumableResponse>> call, Throwable t) {
-                super.onFailure(call, t);
-                Toast.makeText(getApplicationContext(), "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
-            }
         });
     }
 
@@ -134,6 +124,5 @@ public class ManageAccountActivity extends AppCompatActivity {
         menuList.add(menu);
         return menu;
     }
-
 
 }

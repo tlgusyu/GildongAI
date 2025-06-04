@@ -1,30 +1,16 @@
 package com.example.gildonaitemp.activity;
 
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
-import android.util.Log;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
-import android.graphics.Typeface;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.gildonaitemp.dto.DrivingPatternResponse;
 import com.example.gildonaitemp.R;
-import com.example.gildonaitemp.api.ApiClient;
-import com.example.gildonaitemp.api.ApiService;
+import com.example.gildonaitemp.api.ApiCaller;
 import com.example.gildonaitemp.api.ResponseCallback;
-import com.example.gildonaitemp.dto.WeeklyDrivingPatterns;
+import com.example.gildonaitemp.dto.WeeklyDrivingPatternsResponse;
 
 import java.util.List;
 
@@ -36,8 +22,8 @@ public class MyDrivingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_driving);
+
         getDrivingHistory();
     }
 
@@ -47,13 +33,10 @@ public class MyDrivingActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = prefs.getString("userId", null);
 
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<List<WeeklyDrivingPatterns>> call = apiService.getWeeklyDrivingPatterns(userId);
-
-        call.enqueue(new ResponseCallback<List<WeeklyDrivingPatterns>>() {
+        ApiCaller.getWeeklyDrivingPatterns(userId, new ResponseCallback<List<WeeklyDrivingPatternsResponse>>() {
             @Override
-            public void onSuccess(List<WeeklyDrivingPatterns> patterns) {
-                for (WeeklyDrivingPatterns pattern : patterns) {
+            public void onSuccess(List<WeeklyDrivingPatternsResponse> patterns) {
+                for (WeeklyDrivingPatternsResponse pattern : patterns) {
                     String addHistory = pattern.getWeekStart().substring(0, 10)
                             + "부터 일주일 동안의 평균점수는 "
                             + pattern.getAverageScore() + "점 입니다.\n"
@@ -63,13 +46,17 @@ public class MyDrivingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(Response<List<WeeklyDrivingPatterns>> response) {
-                super.onError(response);
+            public void onError(Response<List<WeeklyDrivingPatternsResponse>> response) {
                 if (response.code() == 404) {
-                    Toast.makeText(MyDrivingActivity.this, "사용자 없음", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyDrivingActivity.this, "사용자를 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MyDrivingActivity.this, "운전 패턴 조회 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyDrivingActivity.this, "운전 점수 기록 조회 실패", Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFailure(Call<List<WeeklyDrivingPatternsResponse>> call, Throwable t) {
+                Toast.makeText(MyDrivingActivity.this, "서버 연결에 실패했습니다", Toast.LENGTH_SHORT).show();
             }
         });
 

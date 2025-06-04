@@ -4,13 +4,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.gildonaitemp.activity.LoginActivity;
+
+import java.io.IOException;
 
 public abstract class ResponseCallback<T> implements Callback<T> {
-
-    @Override
-    public void onFailure(Call<T> call, Throwable t) {
-        Log.e("API_ERROR", "통신 실패", t);
-    }
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
@@ -23,8 +23,8 @@ public abstract class ResponseCallback<T> implements Callback<T> {
 
     public abstract void onSuccess(T body);
 
+    public void onError(Response<T> response) { }
 
-    public void onError(Response<T> response) {
-        Log.e("API_ERROR", "에러 코드 " + response.code() + " : " + response.message());
-    }
+    @Override
+    public void onFailure(Call<T> call, Throwable t) { }
 }

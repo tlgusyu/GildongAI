@@ -80,6 +80,7 @@
             app:layout_constraintTop_toBottomOf="@+id/main_info">
 
             <TextView
+                android:id="@+id/preSchedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="다음 정비 예정일은 "
@@ -92,7 +93,9 @@
                 android:text="YYYY-MM-DD"
                 android:textSize="16dp"
                 android:textStyle="bold" />
+
             <TextView
+                android:id="@+id/postSchedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 입니다."
