@@ -103,6 +103,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         editAccount.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditAccountActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 

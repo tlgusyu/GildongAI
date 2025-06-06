@@ -36,14 +36,17 @@
         android:background="@drawable/main_info"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="18sp"
-        android:paddingBottom="18sp"
+        android:paddingTop="18dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="18dp"
+        android:paddingRight="20dp"
         app:layout_constraintTop_toBottomOf="@+id/updateCar">
 
         <LinearLayout
-            android:layout_width="310dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -61,19 +64,22 @@
 
         <AutoCompleteTextView
             android:id="@+id/etCarModel"
-            android:layout_width="310dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginBottom="16dp"
+            android:layout_marginRight="4dp"
             android:background="@color/white"
             android:hint="차량 모델명 (예: Avante)"
             android:inputType="text"
             android:padding="12dp" />
 
         <LinearLayout
-            android:layout_width="310dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +89,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 입력"
                 android:textSize="20sp" />
@@ -91,10 +97,12 @@
 
         <EditText
             android:id="@+id/etCarNum"
-            android:layout_width="310dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginBottom="16dp"
+            android:layout_marginRight="4dp"
             android:background="@color/white"
             android:hint="차량 번호 (예: 12가 1234)"
             android:inputType="text"
