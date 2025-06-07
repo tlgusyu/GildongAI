@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiCaller;
-import com.example.gildonaitemp.dto.ConsumableResponse;
+import com.example.gildonaitemp.application.initApplication;
 import com.example.gildonaitemp.dto.UserRegisterRequest;
 import com.example.gildonaitemp.dto.UserResponse;
 import com.example.gildonaitemp.api.ResponseCallback;
@@ -26,8 +25,6 @@ import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.common.model.ClientError;
 import com.kakao.sdk.common.model.ClientErrorCause;
-
-import java.util.List;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
@@ -52,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("userId", user.getId());
         editor.apply();
 
+        ((initApplication)getApplicationContext()).initializeSSEConnection(user.getId());
+
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -62,11 +61,12 @@ public class LoginActivity extends AppCompatActivity {
         Button registerButton = (Button) findViewById(R.id.sign_up);
         Button loginButton = (Button) findViewById(R.id.login_button);
         LinearLayout kakaoLogin = (LinearLayout) findViewById(R.id.signup_kakao);
+        LinearLayout naverLogin = (LinearLayout) findViewById(R.id.signup_naver);
+        LinearLayout googleLogin = (LinearLayout) findViewById(R.id.signup_google);
 
         registerButton.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-            finish();
         });
 
         TextInputLayout layoutID  = findViewById(R.id.LayoutID);
@@ -110,6 +110,14 @@ public class LoginActivity extends AppCompatActivity {
         kakaoLogin.setOnClickListener(v ->
                 kakaoAccess()
         );
+
+        naverLogin.setOnClickListener(v -> {
+            Toast.makeText(LoginActivity.this, "서비스 개발 중입니다", Toast.LENGTH_SHORT).show();
+        });
+
+        googleLogin.setOnClickListener(v -> {
+            Toast.makeText(LoginActivity.this, "서비스 개발 중입니다", Toast.LENGTH_SHORT).show();
+        });
     }
 
     public void loginUser(String loginId, String password) {

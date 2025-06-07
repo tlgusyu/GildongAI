@@ -1,6 +1,8 @@
 package com.example.gildonaitemp.adapter;
 
-public class NotificationItem {
+import java.io.Serializable;
+
+public class NotificationItem implements Serializable {
     private String title;    // 차량 점검, 안전, 차량 소모품
     private String message;     // 알림 텍스트 (설명)
 

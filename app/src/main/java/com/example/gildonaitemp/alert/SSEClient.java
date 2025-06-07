@@ -40,9 +40,9 @@ public class SSEClient {
                     }
 
                     @Override
-                    public void onEvent(EventSource eventSource, String id, String type, String data) {
-                        Log.i("Alert", "Received event: id=" + id + "event=" + type + ", data=" + data);
-                        if (type.equals("ALERT")) {
+                    public void onEvent(EventSource eventSource, String id, String eventType, String data) {
+                        Log.i("Alert", "Received event: id=" + id + "event=" + eventType + ", data=" + data);
+                        if (eventType.equals("ALERT")) {
                             NotificationItem item = parseData(data);
                             if (callback != null && item != null) {
                                 callback.onNewNotification(item);

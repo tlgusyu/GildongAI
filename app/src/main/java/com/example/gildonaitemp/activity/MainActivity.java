@@ -1,6 +1,9 @@
 package com.example.gildonaitemp.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiCaller;
@@ -23,6 +27,20 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView textViewUnreadCount;
+    private BroadcastReceiver unreadCountReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count = intent.getIntExtra("count", 0);
+            runOnUiThread(() -> {
+                textViewUnreadCount.setText(String.valueOf(count));
+                // 0이면 안보이게
+                // activity_main에서 위치 조정, 글씨 색 white로
+            });
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        textViewUnreadCount = (TextView) findViewById(R.id.unreadCount);
 
         isCarRegistered();
     }
@@ -146,6 +165,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(unreadCountReceiver, new IntentFilter("UNREAD_COUNT_UPDATED"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(unreadCountReceiver);
     }
 
 }
