@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,9 +18,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.api.ApiCaller;
 import com.example.gildonaitemp.api.ResponseCallback;
+import com.example.gildonaitemp.application.initApplication;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.dto.UserResponse;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.example.gildonaitemp.alert.SSEClient;
 
 import java.util.List;
 
@@ -34,12 +37,20 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             int count = intent.getIntExtra("count", 0);
             runOnUiThread(() -> {
-                textViewUnreadCount.setText(String.valueOf(count));
-                // 0이면 안보이게
-                // activity_main에서 위치 조정, 글씨 색 white로
+                setUnreadCountText(count);
             });
         }
     };
+
+    private void setUnreadCountText(int count) {
+        textViewUnreadCount.setText(String.valueOf(count));
+        if (count == 0) {
+            textViewUnreadCount.setVisibility(View.INVISIBLE);
+        }
+        else {
+            textViewUnreadCount.setVisibility(View.VISIBLE);
+        }
+    }
 
 
     @Override
@@ -53,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
             prefs.edit().clear().apply();
+
+            //SSE 연결 끊기
+            SSEClient sseClient = SSEClient.getInstance(this); //this는 무시됨
+            sseClient.stopSSE();
 
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -133,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setClickEvent();
-
     }
 
     private void setClickEvent() {
@@ -163,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         alarmButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, NotificationActivity.class);
             startActivity(intent);
+            finish();
         });
 
     }
@@ -171,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(unreadCountReceiver, new IntentFilter("UNREAD_COUNT_UPDATED"));
+        setUnreadCountText(((initApplication)getApplicationContext()).getUnreadNotificationCount());
     }
 
     @Override

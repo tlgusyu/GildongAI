@@ -6,6 +6,8 @@ import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableCarUpdateRequest;
 import com.example.gildonaitemp.dto.ConsumableOverviewResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
+import com.example.gildonaitemp.dto.NotificationRequest;
+import com.example.gildonaitemp.dto.NotificationResponse;
 import com.example.gildonaitemp.dto.ServerUserLoginRequest;
 import com.example.gildonaitemp.dto.ServerUserUpdateRequest;
 import com.example.gildonaitemp.dto.UserRegisterRequest;
@@ -14,6 +16,7 @@ import com.example.gildonaitemp.dto.WeeklyDrivingPatternsResponse;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ApiCaller {
@@ -97,6 +100,12 @@ public class ApiCaller {
     public static void getCarModelsByModelName(String carModel, ResponseCallback<List<CarModelResponse>> callback) {
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<List<CarModelResponse>> call = apiService.getCarModelsByModelName(carModel);
+        call.enqueue(callback);
+    }
+
+    public static void getNotificationsByUserId(String userId, ResponseCallback<List<NotificationResponse>> callback) {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<List<NotificationResponse>> call = apiService.getNotificationsByUserId(userId);
         call.enqueue(callback);
     }
 

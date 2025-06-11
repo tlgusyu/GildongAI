@@ -29,9 +29,9 @@
 
         <TextView
             android:id="@+id/AlarmText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="소나타 12가 3456 의 차량 점검일이 다가옵니다. (4/6)"
+            android:text="소"
             android:textStyle="bold" />
     </LinearLayout>
 

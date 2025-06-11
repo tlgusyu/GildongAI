@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,9 +22,12 @@ import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.adapter.VerticalSpaceItemDecoration;
 import com.example.gildonaitemp.alert.NotificationCallback;
 import com.example.gildonaitemp.alert.SSEClient;
+import com.example.gildonaitemp.api.ApiCaller;
 import com.example.gildonaitemp.api.ApiClient;
 import com.example.gildonaitemp.api.ApiService;
+import com.example.gildonaitemp.api.ResponseCallback;
 import com.example.gildonaitemp.application.initApplication;
+import com.example.gildonaitemp.dto.NotificationResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,12 +40,9 @@ import retrofit2.Response;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerViewNew, recyclerViewOld;
-    private NotificationAdapter newNotificationAdapter, oldNotificationAdapter;
-    private List<NotificationItem> newNotifications, oldNotifications;
-
-    private ApiService apiService;
-   // private SSEClient alertSSEClient;
+    private RecyclerView recyclerViewNew;
+    private NotificationAdapter newNotificationAdapter;
+    private List<NotificationItem> newNotifications = new ArrayList<>();;
 
     private BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
         @Override
@@ -48,9 +50,9 @@ public class NotificationActivity extends AppCompatActivity {
             NotificationItem item = (NotificationItem) intent.getSerializableExtra("notification");
             if (item != null) {
                 runOnUiThread(() -> {
-                    Log.i("Alert", "NotificationCallback");
-                    newNotifications.add(0, item);
-                    refreshNotification();
+                    Log.i("Alert", "NotificationCallback on Broadcast");
+                    newNotifications.clear();
+                    getAlertHistory();
                 });
             }
         }
@@ -63,77 +65,57 @@ public class NotificationActivity extends AppCompatActivity {
 
         ((initApplication)getApplicationContext()).resetUnreadCount();
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ((initApplication)getApplicationContext()).resetUnreadCount();
+                Intent intent = new Intent(NotificationActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         recyclerViewNew = findViewById(R.id.recyclerViewNewNotifications);
 
-        apiService = ApiClient.getClient().create(ApiService.class);
-
-        // get List<NotificationItem> 로 기존 알림 가져옴
-        // 기존 알림 (샘플 데이터)
-        newNotifications = new ArrayList<>();
-        newNotifications.add(0, new NotificationItem("차량 점검", "소나타 12가 1234 차량의 차량 점검일이 다가옵니다. (3/14)"));
-        newNotifications.add(0, new NotificationItem("안전", "오늘 졸음운전이 감지되었어요.\n"+"요즘 피곤하신가요?"));
-        newNotifications.add(0, new NotificationItem("안전", "최근 운전 점수가 낮게 나왔어요.\n"+"부드러운 주행으로 점수를 올려볼까요?"));
-        newNotifications.add(0, new NotificationItem("차량 소모품", "교체 완료! 소나타 12가 3456 차량 (04/04)"));
-
-        //알림 페이지에 있을 때 알림 오면 중복 발생하는지 확인
+        getAlertHistory();
         setNotification();
-
-        /*alertSSEClient = new SSEClient();
-        alertSSEClient.setCallback(new NotificationCallback() {
-            @Override
-            public void onNewNotification(NotificationItem item) {
-                runOnUiThread(() -> {
-                    Log.i("Alert", "NotificationCallback");
-                    newNotifications.add(0, item);
-                    refreshNotification();
-                });
-            }
-        });*/
-
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void getAlertHistory() {
 
-/*
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = prefs.getString("userId", null);
 
-        if (userId != null) {
-            //alertSSEClient.startSSE(userId);
-
-            //test
-            Call<ResponseBody> call = apiService.sendTestAlert(userId);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        try {
-                            String rawJson = response.body().string();
-                            Log.i("TestAlert", "원본 응답: " + rawJson);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Log.e("TestAlert", "응답 실패: " + response.code());
-                    }
+        // get List<NotificationItem> 로 기존 알림 가져옴
+        ApiCaller.getNotificationsByUserId(userId, new ResponseCallback<List<NotificationResponse>>() {
+            @Override
+            public void onSuccess(List<NotificationResponse> notifications) {
+                for (NotificationResponse notification : notifications) {
+                    Log.i("Alert", "notification Title : " + notification.getTitle());
+                    newNotifications.add(new NotificationItem(notification.getTitle(), notification.getMessage()));
                 }
+                refreshNotification();
+            }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.e("TestAlert", "실패: " + t.getMessage());
+            @Override
+            public void onError(Response<List<NotificationResponse>> response) {
+                if (response.code() == 404) {
+                    Toast.makeText(NotificationActivity.this, "사용자 또는 알림을 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(NotificationActivity.this, "알림 내역 조회 실패", Toast.LENGTH_SHORT).show();
                 }
-            });
-        } else {
-            Log.e("NotificationActivity", "userId가 없습니다.");
-        }*/
+            }
+
+            @Override
+            public void onFailure(Call<List<NotificationResponse>> call, Throwable t) {
+                Toast.makeText(NotificationActivity.this, "서버 연결에 실패했습니다", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
-
     private void setNotification() {
-        refreshNotification();
-
         // 16dp 간격 적용 (ItemDecoration)
         int spacingInPixels = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
@@ -147,12 +129,6 @@ public class NotificationActivity extends AppCompatActivity {
         recyclerViewNew.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewNew.setAdapter(newNotificationAdapter);
     }
-/*
-    @Override
-    protected void onStop() {
-        super.onStop();
-        alertSSEClient.stopSSE();
-    }*/
 
     @Override
     protected void onResume() {
@@ -160,7 +136,6 @@ public class NotificationActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(notificationReceiver, new IntentFilter("NEW_NOTIFICATION"));
     }
-
 
     @Override
     protected void onPause() {

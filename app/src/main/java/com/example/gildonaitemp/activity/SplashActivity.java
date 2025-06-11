@@ -1,6 +1,7 @@
 package com.example.gildonaitemp.activity;
 
 import com.example.gildonaitemp.R;
+import com.example.gildonaitemp.application.initApplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,8 @@ public class SplashActivity extends AppCompatActivity {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
                 } else {
+                    ((initApplication)getApplicationContext()).initializeSSEConnection(userId);
+
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

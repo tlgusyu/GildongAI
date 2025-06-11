@@ -4,6 +4,8 @@ import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableOverviewResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.dto.ConsumableCarUpdateRequest;
+import com.example.gildonaitemp.dto.NotificationRequest;
+import com.example.gildonaitemp.dto.NotificationResponse;
 import com.example.gildonaitemp.dto.ServerUserLoginRequest;
 import com.example.gildonaitemp.dto.UserResponse;
 import com.example.gildonaitemp.dto.UserRegisterRequest;
@@ -55,9 +57,8 @@ public interface ApiService {
     @GET("/api/car-models/model/{modelName}")
     Call<List<CarModelResponse>> getCarModelsByModelName(@Path("modelName") String modelName);
 
-    //test
-    @POST("alerts/test/{userId}")
-    Call<ResponseBody> sendTestAlert(@Path("userId") String userId);
+    @GET("api/notifications/user/{userId}")
+    Call<List<NotificationResponse>> getNotificationsByUserId(@Path("userId") String userId);
 
 }
 
