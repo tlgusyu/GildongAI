@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
             // SSE 연결 끊기
             SSEClient sseClient = SSEClient.getInstance(this); // this는 무시됨
             sseClient.stopSSE();
+            // initApplication의 userId null로 변경
+            ((initApplication)getApplicationContext()).setUserId(null);
+            // unreadCount 초기화
+            ((initApplication)getApplicationContext()).resetUnreadCount();
+
 
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

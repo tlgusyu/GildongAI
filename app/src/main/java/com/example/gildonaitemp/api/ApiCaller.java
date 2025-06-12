@@ -47,7 +47,7 @@ public class ApiCaller {
 
     public static void getUserById(String userId, ResponseCallback<UserResponse> callback) {
         if (userId == null) {
-            Log.e("ApiCaller", "userId is null");
+            Log.e("ApiCaller", "getUserById: userId is null");
             return;
         }
         ApiService apiService = ApiClient.getClient().create(ApiService.class);

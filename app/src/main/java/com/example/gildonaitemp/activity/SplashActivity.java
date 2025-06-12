@@ -24,11 +24,11 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (userId == null) {
+                    ((initApplication)getApplicationContext()).setUserId(userId);
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
                 } else {
                     ((initApplication)getApplicationContext()).initializeSSEConnection(userId);
-
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

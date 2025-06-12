@@ -31,6 +31,8 @@ public class SSEClient {
 
     private Context context;
     private boolean connected = false;
+    private boolean manuallyStopped = false;
+
     private SSEClient(Context context) {
         this.context = context.getApplicationContext();
     }
@@ -44,6 +46,7 @@ public class SSEClient {
     }
 
     public void startSSE(String userId) {
+        manuallyStopped = false;
         if (connected) {
             Log.i("Alert", "SSE 중복 연결 방지");
             return;
@@ -81,6 +84,11 @@ public class SSEClient {
                         Log.e("Alert", "SSE onFailure: " + t.getMessage());
                         connected = false;
 
+                        if (manuallyStopped) {
+                            Log.d("SSE", manuallyStopped + "재연결 안 함");
+                            return;
+                        }
+
                         // 1초 후에 재연결 시도
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             Log.e("Alert", "SSE onFailure: try reconnect");
@@ -103,6 +111,7 @@ public class SSEClient {
     }
 
     public void stopSSE() {
+        manuallyStopped = true;
         if (eventSource != null) {
             eventSource.cancel();
             eventSource = null;

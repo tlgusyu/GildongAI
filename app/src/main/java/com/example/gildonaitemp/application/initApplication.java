@@ -19,6 +19,7 @@ public class initApplication extends Application implements DefaultLifecycleObse
 
     private SSEClient sseClient;
     private int unreadNotificationCount = 0;
+    private String userId;
 
     public synchronized int getUnreadNotificationCount() {
         return unreadNotificationCount;
@@ -42,6 +43,9 @@ public class initApplication extends Application implements DefaultLifecycleObse
     }
 
     public void initializeSSEConnection(String userId) {
+        setUserId(userId);
+
+        Log.i("Alert", "initApplication initializeSSEConnection get userId " + userId);
         if (sseClient == null) {
             sseClient = SSEClient.getInstance(this);
             sseClient.setCallback(new NotificationCallback() {
@@ -64,8 +68,21 @@ public class initApplication extends Application implements DefaultLifecycleObse
 
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public void onStart(@NonNull LifecycleOwner owner) {
+        Log.d("Alert", "앱이 포그라운드로 돌아옴 userId: " + userId);
+        if ((sseClient != null) && (userId != null)) {
+            sseClient.startSSE(userId);
+        }
+    }
+
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
+        Log.d("Alert", "앱이 백그라운드로 전환됨");
         if (sseClient != null) {
             sseClient.stopSSE();
         }
