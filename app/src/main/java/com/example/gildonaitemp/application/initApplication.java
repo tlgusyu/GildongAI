@@ -51,6 +51,7 @@ public class initApplication extends Application implements DefaultLifecycleObse
                 @Override
                 public void onNewNotification(NotificationItem item) {
                     ((initApplication)getApplicationContext()).incrementUnreadCount();
+                    Log.i("Alert", "unreadCount increased " + getUnreadNotificationCount());
 
                     // BroadCast 전송
                     Intent intent = new Intent("NEW_NOTIFICATION");

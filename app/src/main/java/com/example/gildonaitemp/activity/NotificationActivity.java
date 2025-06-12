@@ -92,7 +92,6 @@ public class NotificationActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<NotificationResponse> notifications) {
                 for (NotificationResponse notification : notifications) {
-                    Log.i("Alert", "notification Title : " + notification.getTitle());
                     newNotifications.add(new NotificationItem(notification.getTitle(), notification.getMessage()));
                 }
                 refreshNotification();
