@@ -25,6 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -58,6 +62,26 @@ public class ManageCarActivity extends AppCompatActivity {
                 TextView postSchedule = (TextView) findViewById(R.id.postSchedule);
 
                 String nextDueDate = consumableOverview.getNextDueDate();
+                // 직접 계산
+                ConsumableResponse data = consumableOverview.getAll().get(0);
+
+                String[] rawDates = {
+                        safeString(data.getEngineOilDate()),
+                        safeString(data.getBatteryDate()),
+                        safeString(data.getCoolantDate()),
+                        safeString(data.getTransmissionOilDate()),
+                        safeString(data.getBrakeOilDate()),
+                        safeString(data.getAirconFilterDate())
+                };
+
+                List<String> dates = new ArrayList<>();
+                for (String date : rawDates) {
+                    if (!date.equals("")) {
+                        dates.add(date.trim());
+                    }
+                }
+                nextDueDate = getNearestFutureDate(dates);
+
                 if (nextDueDate != null) {
                     preSchedule.setText("다음 정비 예정일은 ");
                     String nextDueDateFormat = nextDueDate.substring(0, 4) + "-" +
@@ -93,6 +117,36 @@ public class ManageCarActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    public String getNearestFutureDate(List<String> dateStrings) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        sdf.setLenient(false);
+
+        Date today;
+        try {
+            today = sdf.parse(sdf.format(new Date()));  // 오늘 날짜, 시간 제거
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Date nearestFutureDate = null;
+
+        for (String dateStr : dateStrings) {
+            try {
+                Date date = sdf.parse(dateStr);
+                if (date.after(today)) {
+                    if (nearestFutureDate == null || date.before(nearestFutureDate)) {
+                        nearestFutureDate = date;
+                    }
+                }
+            } catch (ParseException e) {
+                System.err.println("Invalid date format: " + dateStr);
+            }
+        }
+
+        return (nearestFutureDate != null) ? sdf.format(nearestFutureDate) : null;
     }
 
     private void setConsumable(@NonNull ConsumableResponse data) {

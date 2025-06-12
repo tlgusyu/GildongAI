@@ -39,7 +39,7 @@ public class MyDrivingActivity extends AppCompatActivity {
                 for (WeeklyDrivingPatternsResponse pattern : patterns) {
                     String addHistory = pattern.getWeekStart().substring(0, 10)
                             + "부터 일주일 동안의 평균점수는 "
-                            + pattern.getAverageScore() + "점 입니다.\n"
+                            + String.format("%.1f", pattern.getAverageScore()) + "점 입니다.\n"
                             + drivingHistory.getText().toString();
                     drivingHistory.setText(addHistory);
                 }
