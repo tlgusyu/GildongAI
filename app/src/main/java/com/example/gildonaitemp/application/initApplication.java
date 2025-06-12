@@ -2,7 +2,6 @@ package com.example.gildonaitemp.application;
 
 import android.app.Application;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,6 @@ import com.kakao.sdk.common.KakaoSdk;
 public class initApplication extends Application implements DefaultLifecycleObserver {
 
     private SSEClient sseClient;
-    //private String userId = null;
     private int unreadNotificationCount = 0;
 
     public synchronized int getUnreadNotificationCount() {
@@ -44,14 +42,12 @@ public class initApplication extends Application implements DefaultLifecycleObse
     }
 
     public void initializeSSEConnection(String userId) {
-        //this.userId = userId;
         if (sseClient == null) {
             sseClient = SSEClient.getInstance(this);
             sseClient.setCallback(new NotificationCallback() {
                 @Override
                 public void onNewNotification(NotificationItem item) {
-                    ((initApplication)getApplicationContext()).incrementUnreadCount();
-                    Log.i("Alert", "unreadCount increased " + getUnreadNotificationCount());
+                    incrementUnreadCount();
 
                     // BroadCast 전송
                     Intent intent = new Intent("NEW_NOTIFICATION");
@@ -59,7 +55,7 @@ public class initApplication extends Application implements DefaultLifecycleObse
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
                     Intent countIntent = new Intent("UNREAD_COUNT_UPDATED");
-                    countIntent.putExtra("count", ((initApplication)getApplicationContext()).getUnreadNotificationCount());
+                    countIntent.putExtra("count", getUnreadNotificationCount());
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(countIntent);
                 }
             });

@@ -4,7 +4,6 @@ import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableOverviewResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
 import com.example.gildonaitemp.dto.ConsumableCarUpdateRequest;
-import com.example.gildonaitemp.dto.NotificationRequest;
 import com.example.gildonaitemp.dto.NotificationResponse;
 import com.example.gildonaitemp.dto.ServerUserLoginRequest;
 import com.example.gildonaitemp.dto.UserResponse;
@@ -12,7 +11,6 @@ import com.example.gildonaitemp.dto.UserRegisterRequest;
 import com.example.gildonaitemp.dto.ServerUserUpdateRequest;
 import com.example.gildonaitemp.dto.WeeklyDrivingPatternsResponse;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

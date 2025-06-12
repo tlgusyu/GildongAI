@@ -32,7 +32,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         NotificationItem notification = notificationList.get(position);
 
-        holder.textViewCategory.setText(notification.getTitle()); //이름변경
+        holder.textViewCategory.setText(notification.getTitle()); //title을 저장하는 영역 이름이 category
         holder.textViewMessage.setText(notification.getMessage());
 
         switch (notification.getTitle()) {
@@ -64,7 +64,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewIcon = itemView.findViewById(R.id.AlarmIcon); // 아이콘
-            textViewCategory = itemView.findViewById(R.id.AlarmCategory); // 카테고리
+            textViewCategory = itemView.findViewById(R.id.AlarmCategory); // 카테고리(Title)
             textViewMessage = itemView.findViewById(R.id.AlarmText); // 텍스트
         }
     }

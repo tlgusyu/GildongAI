@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUnreadCountText(int count) {
         textViewUnreadCount.setText(String.valueOf(count));
+        Log.i("Alert", "unreadNotificationCount : " + ((initApplication)getApplicationContext()).getUnreadNotificationCount() + " count : " + count);
         if (count == 0) {
             textViewUnreadCount.setVisibility(View.INVISIBLE);
         }
@@ -65,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
             prefs.edit().clear().apply();
 
-            //SSE 연결 끊기
-            SSEClient sseClient = SSEClient.getInstance(this); //this는 무시됨
+            // SSE 연결 끊기
+            SSEClient sseClient = SSEClient.getInstance(this); // this는 무시됨
             sseClient.stopSSE();
 
             Intent intent = new Intent(this, LoginActivity.class);

@@ -20,22 +20,15 @@ import com.example.gildonaitemp.adapter.NotificationAdapter;
 import com.example.gildonaitemp.adapter.NotificationItem;
 import com.example.gildonaitemp.R;
 import com.example.gildonaitemp.adapter.VerticalSpaceItemDecoration;
-import com.example.gildonaitemp.alert.NotificationCallback;
-import com.example.gildonaitemp.alert.SSEClient;
 import com.example.gildonaitemp.api.ApiCaller;
-import com.example.gildonaitemp.api.ApiClient;
-import com.example.gildonaitemp.api.ApiService;
 import com.example.gildonaitemp.api.ResponseCallback;
 import com.example.gildonaitemp.application.initApplication;
 import com.example.gildonaitemp.dto.NotificationResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -87,7 +80,7 @@ public class NotificationActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = prefs.getString("userId", null);
 
-        // get List<NotificationItem> 로 기존 알림 가져옴
+        // 기존 알림 가져온 후 화면에 적용
         ApiCaller.getNotificationsByUserId(userId, new ResponseCallback<List<NotificationResponse>>() {
             @Override
             public void onSuccess(List<NotificationResponse> notifications) {

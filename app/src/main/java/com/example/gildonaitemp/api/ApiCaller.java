@@ -6,7 +6,6 @@ import com.example.gildonaitemp.dto.CarModelResponse;
 import com.example.gildonaitemp.dto.ConsumableCarUpdateRequest;
 import com.example.gildonaitemp.dto.ConsumableOverviewResponse;
 import com.example.gildonaitemp.dto.ConsumableResponse;
-import com.example.gildonaitemp.dto.NotificationRequest;
 import com.example.gildonaitemp.dto.NotificationResponse;
 import com.example.gildonaitemp.dto.ServerUserLoginRequest;
 import com.example.gildonaitemp.dto.ServerUserUpdateRequest;
@@ -16,7 +15,6 @@ import com.example.gildonaitemp.dto.WeeklyDrivingPatternsResponse;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ApiCaller {

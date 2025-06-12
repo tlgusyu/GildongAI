@@ -3,12 +3,6 @@ package com.example.gildonaitemp.api;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.gildonaitemp.activity.LoginActivity;
-
-import java.io.IOException;
 
 public abstract class ResponseCallback<T> implements Callback<T> {
 
